@@ -124,24 +124,24 @@ const CreateGroup = () => {
                     <div>
                         <div className='w-full flex  justify-center py-2 '>
                             <input
-                                className='h-10 px-2 outline-none text-black rounded-lg  w-full border-gray-700 border'
+                                className='h-10 px-2 outline-none  rounded-lg   w-full placeholder:font-semibold bg-transparent border-[#7269EF] border'
                                 type="text"
-                                placeholder='Grup adı yazın..'
+                                placeholder='Grup adı yazın...'
                                 value={groupData.groupName}
                                 onChange={handleGroupNameChange}
                             />
                         </div>
                         <div className='w-full justify-center flex py-2'>
                             <input
-                                className='h-10 px-2 outline-none text-black rounded-lg w-full border-gray-700 border'
+                                className='h-10 px-2 outline-none  rounded-lg w-full placeholder:font-semibold bg-transparent border-[#7269EF] border'
                                 type="text"
-                                placeholder="Kullanıcı ekleyin.."
+                                placeholder="Kullanıcı ekleyin..."
                                 value={searchTerm}
                                 onChange={handleSearch}
                             />
                         </div>
                         {/* Filtrelenmiş kullanıcıları göster */}
-                        {searchTerm && <div className='absolute overflow-y-auto overflow-x-hidden top-48 border bg-white max-h-40 h-auto w-[197px] px-2 text-black'>
+                        {searchTerm && <div className='absolute overflow-y-auto overflow-x-hidden top-48 border bg-white max-h-40 h-auto w-[197px] px-2 text-black rounded-lg'>
                             {searchTerm && users
                                 .filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase()))
                                 .map((user) => (

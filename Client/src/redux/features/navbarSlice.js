@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import GroupMembers from "../../components/groupChat/GroupMembers";
 
 const initialState = {
   chatOpen: true,
@@ -7,6 +8,7 @@ const initialState = {
   host: false,
   settingOpen: false,
   groupCreate: false,
+  groupMembers: false,
 };
 
 export const navbarSlice = createSlice({
@@ -48,11 +50,14 @@ export const navbarSlice = createSlice({
       state.profileOpen = false;
       state.settingOpen = false;
     },
+    openGroupMembers: (state, action) =>{
+      state.groupMembers = action.payload
+    }
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { openChat, openProfile, openNavbar, openHost, openSetting , openGroup} =
+export const { openChat, openProfile, openNavbar, openHost, openSetting , openGroup, openGroupMembers} =
   navbarSlice.actions;
 
 export default navbarSlice.reducer;

@@ -38,7 +38,7 @@ const ChatContent = () => {
       email: user.email,
       name: user.name,
       pic: user.pic,
-      _id: user._id
+      _id: user._id || "156151515186151984"
     },
     updatedAt: "2023-12-28T11:17:55.764Z",
     createdAt: "2023-12-28T11:17:55.764Z",

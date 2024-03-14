@@ -5,11 +5,14 @@ import { setFullSidebar } from "../../redux/features/fullNavbar";
 import { Select } from '@chakra-ui/react'
 import axios from "axios";
 import { increment } from "../../redux/features/counterSlice";
+import { IoSettingsOutline } from "react-icons/io5";
+import { openGroupMembers } from "../../redux/features/navbarSlice";
 
 const ChatUser = () => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
     const dispatch = useDispatch()
     const { theme } = useSelector((state) => state.theme);
+   
     const { selectedChat } = useSelector((state) => state.server);
     const [findUser, setFindUser] = useState(null)
     const [selectedStatus, setSelectedStatus] = useState("");
@@ -31,8 +34,8 @@ const ChatUser = () => {
         if (!selectedChat.isGroupChat) {
             const selectedUser = selectedChat.users.find(users => users._id !== user._id)
             setFindUser(selectedUser)
-        }else{
-            setFindUser(selectedChat.chatName)
+        } else {
+            setFindUser(selectedChat)
         }
 
     }, [selectedChat])
@@ -60,17 +63,40 @@ const ChatUser = () => {
             color: theme ? "white" : "black",
         },
     };
-  //  console.log(selectedChat, "selectedcaht")
+    //  console.log(selectedChat, "selectedcaht")
+   // console.log(findUser, "finduser")
     return (
         <div className={`${theme ? "" : "text-gray-500"} h-full border-b  border-gray-500 flex justify-between items-center pl-3`}>
-            <div className="flex items-center">
-                <div onClick={() => dispatch(setFullSidebar(true))} className="block lg:hidden "><MdChevronLeft size={24} /></div>
-                {findUser && (
-                    <div className="p-3 flex items-center gap-3 font-semibold text-lg ">
-                        <img className="2xl:w-12 2xl:h-12 md:h-10 md:w-10  min-[320px]:h-[35px]  rounded-full" src={findUser.pic || "https://cdn1.iconfinder.com/data/icons/rounded-black-basic-ui/139/Profile_GroupFriend-RoundedBlack-512.png"} />
-                        <div>{findUser.name || findUser} </div>
-                    </div>
-                )}
+            <div className="flex items-center w-full justify-between">
+                <div className="flex items-center">
+                    <div onClick={() => {dispatch(setFullSidebar(true)); dispatch(openGroupMembers(false))}} className="block lg:hidden "><MdChevronLeft size={24} /></div>
+                    {findUser && (
+                        <div className="p-3 flex items-center gap-3 font-semibold text-lg ">
+                            <img className="2xl:w-12 2xl:h-12 md:h-10 md:w-10  min-[320px]:h-[35px]  rounded-full" src={findUser.pic || "https://cdn1.iconfinder.com/data/icons/rounded-black-basic-ui/139/Profile_GroupFriend-RoundedBlack-512.png"} />
+                            <div className="">
+                                <div>{findUser.name || findUser.chatName} </div>
+                                <div>
+                                    {
+                                        findUser.isGroupChat &&
+                                        <div className="flex truncate gap-1 text-xs font-normal">
+                                            {
+                                                findUser.users.slice(0, 3).map((user, i) => (
+                                                    <div key={i} >
+                                                        <div>{user.name},</div>
+                                                    </div>
+                                                ))
+                                            }
+                                            {findUser.users.length > 3 && <div>...</div>}
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+                {findUser?.isGroupChat && <div onClick={() => dispatch(openGroupMembers(true))} className="pr-3">
+                    <IoSettingsOutline size={16} />
+                </div>}
             </div>
             {(user.role === "admin" || user.role === "supporter") &&
                 <div className={`px-6 flex gap-2  ${theme ? "" : "text-gray-500"}`}>
