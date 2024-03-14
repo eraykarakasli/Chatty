@@ -14,7 +14,7 @@ const GroupMembers = () => {
     const [addUser, setAddUser] = useState(false);
     const me = JSON.parse(localStorage.getItem("userInfo"));
     const [users, setUsers] = useState([]);
-
+console.log(selectedChat)
     const handleInputChange = (e) => {
         setChangeName(e.target.value);
     };
@@ -174,12 +174,12 @@ const GroupMembers = () => {
                                 selectedChat.users && selectedChat.users.map((user, i) => (
                                     <div className="flex" key={i}>
                                         {(selectedChat.groupAdmin && selectedChat.groupAdmin._id !== user._id) && (
-                                            <div className="p-2">
+                                            <div className="p-2 items-center justify-between w-full flex">
                                                 <div className="flex items-center gap-2">
                                                     <img className="w-6 rounded-full" src={user.pic} alt="img" />
                                                     <div>{user.name}</div>
                                                 </div>
-                                                {/* <div onClick={()=>handleRemoveUser(user._id)}><IoCloseSharp /></div> */}
+                                                <div onClick={()=>handleRemoveUser(user._id)}><IoCloseSharp /></div>
                                             </div>
                                         )}
                                     </div>

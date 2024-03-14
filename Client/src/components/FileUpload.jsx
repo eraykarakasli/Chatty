@@ -63,7 +63,7 @@ const FileUpload = ({setIsFileJustUploaded}) => {
     return (
         <div className='flex justify-between'>
             <input type="file" onChange={handleFileChange} />
-            <button className='border rounded-sm p-1 hover:bg-gray-400 hover:bg-opacity-10' onClick={handleUpload}>Dosya Yükle</button>
+            <button className='border text-black rounded-sm p-1 hover:bg-gray-400 hover:bg-opacity-10 w-20 bg-white bg-opacity-80' onClick={handleUpload}>Yükle</button>
         </div>
     );
 };

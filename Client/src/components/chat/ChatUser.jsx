@@ -12,7 +12,7 @@ const ChatUser = () => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
     const dispatch = useDispatch()
     const { theme } = useSelector((state) => state.theme);
-   
+    const { groupMembers } = useSelector((state) => state.navbar);
     const { selectedChat } = useSelector((state) => state.server);
     const [findUser, setFindUser] = useState(null)
     const [selectedStatus, setSelectedStatus] = useState("");
@@ -94,7 +94,7 @@ const ChatUser = () => {
                         </div>
                     )}
                 </div>
-                {findUser?.isGroupChat && <div onClick={() => dispatch(openGroupMembers(true))} className="pr-3">
+                {findUser?.isGroupChat && <div onClick={() => dispatch(openGroupMembers(!groupMembers))} className="pr-3">
                     <IoSettingsOutline size={16} />
                 </div>}
             </div>
