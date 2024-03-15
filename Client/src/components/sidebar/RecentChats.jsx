@@ -347,7 +347,7 @@ const RecentChats = () => {
             return (<>
                 {
                     <div onClick={() => {dispatch(setSearchFilter("")); handleUserClick(user, user._id); toggleColor(user._id); setFetch(!fetch); deleteNotify(singleNotifi?.messageId || groupNotifi?.messageId, me._id) }}
-                        className={`${activeItems === user._id && "bg-white bg-opacity-20 rounded"} justify-between border-b border-gray-500 flex gap-3 items-center rounded-t-md hover:bg-white hover:bg-opacity-10 p-1 px-3 cursor-pointer`}
+                        className={`${activeItems === user._id && `${theme ? "bg-white bg-opacity-20 ": "bg-gray-200"}  rounded`} justify-between border-b border-gray-500 flex gap-3 items-center rounded-t-md ${theme ? "hover:bg-white": "hover:bg-gray-700"}  hover:bg-opacity-10 p-1 px-3 cursor-pointer`}
                         key={user._id}>
                         <div className="flex gap-3 items-center">
                             <div className="relative w-10">

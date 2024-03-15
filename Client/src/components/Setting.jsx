@@ -12,7 +12,7 @@ const Setting = () => {
   return (
     <div className={`${theme ? "text-slate-200" : "bg-[#F5F7FB] text-gray-600"} min-w-[400px] h-screen border-r border-gray-500  lg:block`}>
       <div className="text-2xl font-bold  h-[8%]  flex items-center px-4 gap-1 border-b border-gray-500">
-        <div onClick={() => dispatch(setFullSidebar(true))} className="block lg:hidden"><MdChevronLeft size={24} /></div>
+        <div onClick={() => dispatch(setFullSidebar(true))} className="block lg:hidden cursor-pointer"><MdChevronLeft size={24} /></div>
         Hesabım
       </div>
       <div className="flex justify-between p-6 h-[84%] ">

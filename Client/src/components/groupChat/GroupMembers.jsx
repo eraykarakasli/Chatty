@@ -137,7 +137,7 @@ const GroupMembers = () => {
 
                             {
                                 addUser &&
-                                <div className={` ${theme ? "bg-[#212731]" : "bg-white"} absolute rounded z-50 w-full border border-[#7269EF] -mt-48 h-[400px] overflow-y-auto`}>
+                                <div className={` ${theme ? "bg-[#383e47]" : "bg-white"} absolute rounded z-50 w-full border border-[#7269EF] -mt-48 h-[400px] overflow-y-auto`}>
                                     <div className="flex items-center border-b border-[#7269EF] gap-2 p-2 cursor-pointer">
                                         <IoCloseSharp onClick={() => setAddUser(false)} size={20} /> Üye Ekle
                                     </div>
@@ -155,9 +155,9 @@ const GroupMembers = () => {
                                             {searchTerm && users
                                                 .filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase()))
                                                 .map((user) => (
-                                                    <div className='border-b flex gap-2 p-2 hover:bg-gray-200 cursor-pointer '
+                                                    <div className='border-b flex gap-2 p-2 rounded hover:bg-gray-200 cursor-pointer hover:bg-opacity-20 '
                                                         key={user.id}
-                                                        onClick={() => { handleAddUser(user); setSearchTerm("") }}>
+                                                        onClick={() => { handleAddUser(user); setSearchTerm("") ; setAddUser(false)}}>
                                                         <img className='w-6 h-6 rounded-full' src={user.pic} alt="" />
                                                         {user.name}
                                                     </div>
@@ -191,7 +191,7 @@ const GroupMembers = () => {
                                                     </div>
                                                     {openRemoveMenuForUser === user._id && (
                                                         <div className="cursor-pointer absolute right-6" onClick={() => handleRemoveUser(user._id)}>
-                                                            <div className={`w-24  ${theme ? "bg-[#212731]": "bg-[#7269EF] text-white"} p-1 text-center text-sm hover:bg-red-700 rounded`}>
+                                                            <div className={`w-24  ${theme ? "bg-[#383f4b]": "bg-[#7269EF] text-white"} p-1 text-center text-sm hover:bg-red-700 rounded`}>
                                                                 çıkar
                                                             </div>
                                                         </div>
