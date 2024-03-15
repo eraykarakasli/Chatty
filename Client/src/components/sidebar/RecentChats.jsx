@@ -106,7 +106,6 @@ const RecentChats = () => {
             if (matchedChat.isGroupChat == false) {
                 dispatch(setSelectedChat(matchedChat))
                 setRecentId(id);
-                console.log(matchedChat)
             }
         } else {
             dispatch(setSelectedChat(user))
@@ -195,7 +194,7 @@ const RecentChats = () => {
             }
         };
         createNotify()
-    }, [loading, ])
+    }, [loading,recent2 ])
 
     ///get notifi
     useEffect(() => {

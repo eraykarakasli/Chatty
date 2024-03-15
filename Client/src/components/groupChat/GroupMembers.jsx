@@ -184,6 +184,7 @@ const GroupMembers = () => {
                                                     <img className="w-6 rounded-full" src={user.pic} alt="img" />
                                                     <div>{user.name}</div>
                                                 </div>
+                                               {(me._id === selectedChat.groupAdmin._id) &&
                                                 <div className="relative">
                                                     <div onClick={() => toggleRemoveMenuForUser(user._id)} className="cursor-pointer">
                                                         <FaAngleDown />
@@ -196,6 +197,7 @@ const GroupMembers = () => {
                                                         </div>
                                                     )}
                                                 </div>
+                                                }
                                             </div>
                                         )}
                                     </div>
