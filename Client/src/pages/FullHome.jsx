@@ -42,7 +42,7 @@ const FullHome = () => {
                 fullSetting && <FullSetting />
             }
             {
-                profilePop && <div className="absolute bottom-16 right-10"><BottomPopUp /></div>
+                profilePop && <div className="absolute bottom-16 right-32"><BottomPopUp /></div>
             }
 
         </div>

@@ -9,6 +9,7 @@ const initialState = {
   settingOpen: false,
   groupCreate: false,
   groupMembers: false,
+  filterChat: false,
 };
 
 export const navbarSlice = createSlice({
@@ -52,12 +53,15 @@ export const navbarSlice = createSlice({
     },
     openGroupMembers: (state, action) =>{
       state.groupMembers = action.payload
+    },
+    openfilterChat: (state, action) =>{
+      state.filterChat = action.payload
     }
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { openChat, openProfile, openNavbar, openHost, openSetting , openGroup, openGroupMembers} =
+export const { openChat, openProfile, openNavbar, openHost, openSetting , openGroup, openGroupMembers, openfilterChat} =
   navbarSlice.actions;
 
 export default navbarSlice.reducer;

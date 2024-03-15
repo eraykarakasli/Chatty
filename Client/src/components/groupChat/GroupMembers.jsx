@@ -1,20 +1,21 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { FaPencilAlt, FaCheck, FaUserPlus } from "react-icons/fa";
+import { FaPencilAlt, FaCheck, FaUserPlus, FaAngleDown } from "react-icons/fa";
 import axios from "axios";
 import { IoCloseSharp } from "react-icons/io5";
 
 const GroupMembers = () => {
     const { groupMembers } = useSelector((state) => state.navbar);
     const dispatch = useDispatch();
- const { selectedChat } = useSelector((state) => state.server);
+    const { selectedChat } = useSelector((state) => state.server);
     const { theme } = useSelector((state) => state.theme);
     const [changeName, setChangeName] = useState(selectedChat?.chatName); // Başlangıç değeri selectedChat.chatName
     const [handleName, setHandleName] = useState(false);
     const [addUser, setAddUser] = useState(false);
+    const [openRemoveMenuForUser, setOpenRemoveMenuForUser] = useState(null);
     const me = JSON.parse(localStorage.getItem("userInfo"));
     const [users, setUsers] = useState([]);
-console.log(selectedChat)
+    
     const handleInputChange = (e) => {
         setChangeName(e.target.value);
     };
@@ -76,7 +77,7 @@ console.log(selectedChat)
     };
     const [searchTerm, setSearchTerm] = useState('');
 
-    const handleAddUser = async(user) =>{
+    const handleAddUser = async (user) => {
         try {
             const config = {
                 headers: {
@@ -88,12 +89,16 @@ console.log(selectedChat)
                 userId: user._id
             }
             await axios.put("http://localhost:5000/api/chat/groupadd", data, config);
-           
+
         } catch (error) {
             console.log(error)
         }
     }
-    console.log(selectedChat)
+   
+    const toggleRemoveMenuForUser = (userId) => {
+        setOpenRemoveMenuForUser((prevUserId) => (prevUserId === userId ? null : userId));
+    };
+
     return (
         <div className={`${!theme ? "text-black" : "text-white"} w-full flex justify-center pt-10`}>
             {selectedChat &&
@@ -104,13 +109,13 @@ console.log(selectedChat)
                     {!handleName ?
                         <div className="w-full justify-center flex items-center gap-2">
                             {changeName ? changeName : selectedChat.chatName}
-                            <div onClick={() => setHandleName(true)} className="">
+                            <div onClick={() => setHandleName(true)} className="cursor-pointer">
                                 <FaPencilAlt />
                             </div>
                         </div> :
-                        <div className="flex items-center">
+                        <div className="flex items-center justify-center">
                             <input className="bg-transparent border-[#7269EF] border-r-0 border rounded rounded-e-none p-1 outline-none h-9" onChange={handleInputChange} type="text" value={changeName} />
-                            <div onClick={handlePostName} className="border-[#7269EF] border h-9 flex items-center border-l-0 px-1 rounded-e">
+                            <div onClick={handlePostName} className="border-[#7269EF] cursor-pointer border h-9 flex items-center border-l-0 px-1 rounded-e">
                                 <FaCheck />
                             </div>
                         </div>
@@ -121,7 +126,7 @@ console.log(selectedChat)
                         </div>
 
                         <div className="relative">
-                            <div onClick={() => setAddUser(true)} className="flex items-center gap-2 p-2 ">
+                            <div onClick={() => setAddUser(true)} className="flex items-center gap-2 p-2  cursor-pointer">
                                 <div className="text-white rounded-full p-1 bg-[#7269EF]">
                                     <FaUserPlus />
                                 </div>
@@ -132,13 +137,13 @@ console.log(selectedChat)
 
                             {
                                 addUser &&
-                                <div className={` ${theme ? "bg-gray-600" : "bg-white"} absolute rounded z-50 w-full border border-[#7269EF] -mt-48 h-[400px] overflow-y-auto`}>
-                                    <div className="flex items-center border-b border-[#7269EF] gap-2 p-2">
+                                <div className={` ${theme ? "bg-[#212731]" : "bg-white"} absolute rounded z-50 w-full border border-[#7269EF] -mt-48 h-[400px] overflow-y-auto`}>
+                                    <div className="flex items-center border-b border-[#7269EF] gap-2 p-2 cursor-pointer">
                                         <IoCloseSharp onClick={() => setAddUser(false)} size={20} /> Üye Ekle
                                     </div>
                                     <div className="p-2">
                                         <input
-                                            className={`h-10 px-2 outline-none w-full ${theme ? "placeholder:text-white": ""} placeholder:text-sm bg-transparent  border rounded-lg border-[#7269EF]`}
+                                            className={`h-10 px-2 outline-none w-full ${theme ? "placeholder:text-white" : ""} placeholder:text-sm bg-transparent  border rounded-lg border-[#7269EF]`}
                                             type="text"
                                             placeholder="Kullanıcı ekleyin..."
                                             value={searchTerm}
@@ -179,7 +184,18 @@ console.log(selectedChat)
                                                     <img className="w-6 rounded-full" src={user.pic} alt="img" />
                                                     <div>{user.name}</div>
                                                 </div>
-                                                <div onClick={()=>handleRemoveUser(user._id)}><IoCloseSharp /></div>
+                                                <div className="relative">
+                                                    <div onClick={() => toggleRemoveMenuForUser(user._id)} className="cursor-pointer">
+                                                        <FaAngleDown />
+                                                    </div>
+                                                    {openRemoveMenuForUser === user._id && (
+                                                        <div className="cursor-pointer absolute right-6" onClick={() => handleRemoveUser(user._id)}>
+                                                            <div className={`w-24  ${theme ? "bg-[#212731]": "bg-[#7269EF] text-white"} p-1 text-center text-sm hover:bg-red-700 rounded`}>
+                                                                çıkar
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
                                         )}
                                     </div>

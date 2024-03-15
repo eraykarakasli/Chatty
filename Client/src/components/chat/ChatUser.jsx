@@ -63,13 +63,12 @@ const ChatUser = () => {
             color: theme ? "white" : "black",
         },
     };
-    //  console.log(selectedChat, "selectedcaht")
-   // console.log(findUser, "finduser")
+   
     return (
         <div className={`${theme ? "" : "text-gray-500"} h-full border-b  border-gray-500 flex justify-between items-center pl-3`}>
             <div className="flex items-center w-full justify-between">
                 <div className="flex items-center">
-                    <div onClick={() => {dispatch(setFullSidebar(true)); dispatch(openGroupMembers(false))}} className="block lg:hidden "><MdChevronLeft size={24} /></div>
+                    <div onClick={() => {dispatch(setFullSidebar(true)); dispatch(openGroupMembers(false))}} className="block cursor-pointer lg:hidden "><MdChevronLeft size={24} /></div>
                     {findUser && (
                         <div className="p-3 flex items-center gap-3 font-semibold text-lg ">
                             <img className="2xl:w-12 2xl:h-12 md:h-10 md:w-10  min-[320px]:h-[35px]  rounded-full" src={findUser.pic || "https://cdn1.iconfinder.com/data/icons/rounded-black-basic-ui/139/Profile_GroupFriend-RoundedBlack-512.png"} />
@@ -94,7 +93,7 @@ const ChatUser = () => {
                         </div>
                     )}
                 </div>
-                {findUser?.isGroupChat && <div onClick={() => dispatch(openGroupMembers(!groupMembers))} className="pr-3">
+                {findUser?.isGroupChat && <div onClick={() => dispatch(openGroupMembers(!groupMembers))} className="pr-3 cursor-pointer">
                     <IoSettingsOutline size={16} />
                 </div>}
             </div>

@@ -9,7 +9,7 @@ import { increment } from "../../redux/features/counterSlice";
 const OnlineMembers = () => {
     const [users, setUsers] = useState([]);
     const { theme } = useSelector((state) => state.theme);
-    const { chats } = useSelector((state) => state.server);
+   const { chats } = useSelector((state) => state.server); 
     const user = JSON.parse(localStorage.getItem("userInfo"));
     const dispatch = useDispatch()
     const toast = useToast()

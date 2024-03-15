@@ -32,13 +32,13 @@ const BottomPopUp = () => {
   }
 
   return (
-    <div className={`${theme ? "bg-gray-800 text-slate-200" : "bg-white border text-gray-600"}  w-28 h-22   p-2 rounded-md`}>
+    <div className={`${theme ? "bg-gray-800 text-slate-200" : "bg-white border text-gray-600"}  w-28 h-22  p-2 rounded-md`}>
       <div onClick={handleSetting} className="flex items-center justify-between  mb-1  cursor-pointer border-gray-600 p-2 hover:bg-gray-500 hover:bg-opacity-10 rounded-md ">
         <div className="text-sm ">Hesabım</div>
         <IoSettingsOutline size={16} />
       </div>
       <div className="w-full border-[1px] border-gray-500"></div>
-      <div onClick={handleLogout} className="flex items-center justify-between cursor-pointer  hover:bg-gray-500 hover:bg-opacity-10 rounded-md mt-1 p-2">
+      <div onClick={handleLogout} className="flex items-center justify-between cursor-pointer hover:bg-gray-500 hover:bg-opacity-10 rounded-md mt-1 p-2">
         <div className="text-sm ">Çıkış Yap</div>
         <RiLogoutCircleRLine size={16} />
       </div>

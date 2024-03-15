@@ -128,7 +128,7 @@ const Profile = () => {
     <div className={`${theme ? "text-slate-200" : "text-gray-600"} lg:min-w-[400px] lg:max-w-[400px] w-full h-screen border-r border-gray-500`}>
       <div className='h-[83%] w-full overflow-auto'>
         <div className='h-[9.6%] w-full border-b border-gray-500 flex items-center px-4 text-2xl font-bold '>
-          <div onClick={() => dispatch(setFullSidebar(true))} className='pr-2 block lg:hidden'>
+          <div onClick={() => dispatch(setFullSidebar(true))} className='pr-2 block lg:hidden cursor-pointer'>
             <MdChevronLeft size={24} />
           </div>
           Hızlı Mesaj

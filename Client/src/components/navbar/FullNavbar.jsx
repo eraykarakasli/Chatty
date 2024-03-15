@@ -28,7 +28,7 @@ const FullNavbar = () => {
                             <BiMessageRoundedAdd className={`hover:bg-gray-500  p-2 rounded-md hover:bg-opacity-10 cursor-pointer duration-500 `} size={48} />
                         </div>
                     </div>
-                    <div onClick={()=>dispatch(setProfilePop(!profilePop))}>
+                    <div className="cursor-pointer" onClick={()=>dispatch(setProfilePop(!profilePop))}>
                         <IoSettingsOutline size={28} />
                     </div>
                     <div  >

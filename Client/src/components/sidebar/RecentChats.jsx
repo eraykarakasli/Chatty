@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { setLoadingFilter } from "../../redux/features/categoryFilterSlice";
+import { setLoadingFilter, setSearchFilter } from "../../redux/features/categoryFilterSlice";
 import { setFullChat } from "../../redux/features/fullNavbar";
 import { setSelectedChat } from "../../redux/providerRedux/serverSlice";
 import axios from "axios";
@@ -18,12 +18,10 @@ const RecentChats = () => {
     const { theme } = useSelector((state) => state.theme);
     const { selectedChat } = useSelector((state) => state.server);
     const render = useSelector((state) => state.counter.value);
-    const [filteredUser, setFilteredUser] = useState();
     const me = JSON.parse(localStorage.getItem("userInfo"));
     const { notification, messages } = useSelector((state) => state.messages);
     const [activeItems, setActiveItems] = useState();
     const [list, setList] = useState();
-    const [test, setTest] = useState();
     const [mesaj, setMesaj] = useState();
     const [fetch, setFetch] = useState(false);
     const [recent2, setRecent2] = useState();
@@ -31,6 +29,7 @@ const RecentChats = () => {
     const [notifi2, setNotifi2] = useState([]);
     const { temporary } = useSelector((state) => state.temporary);
     const [count, setCount] = useState(0);
+    const {filterChat} = useSelector((state) => state.navbar);
 
     useEffect(() => {
         if (recentId) {
@@ -57,7 +56,7 @@ const RecentChats = () => {
             }
         };
         fetchChats();
-    }, [dispatch, me.token, filterCat, selectedChat, notification, render, notifi])
+    }, [dispatch, me.token, filterCat, selectedChat, notification, render, notifi, filterChat])
 
     useEffect(() => {
         if (recent && recent.length > 0) {
@@ -77,27 +76,6 @@ const RecentChats = () => {
             setDeneme(allUsers);
         }
     }, [recent, notification]);
-
-    useEffect(() => {
-        if (list) {
-            if (searchFilter && list.length > 0) {
-                const matchingUsers = list.filter((user) => user.name.toLowerCase().includes(searchFilter.toLowerCase()) || user.chatName.toLowerCase().includes(searchFilter.toLowerCase()));
-                setFilteredUser(matchingUsers)
-                setLoadingFilter(false)
-                console.log(filteredUser, "filtered user")
-            } else {
-                if (filterStatus == "Hepsi") {
-                    const filteredUsers = list.filter((user) => user.category === filterCat);
-                    setFilteredUser(filteredUsers)
-                } else {
-                    const filteredUsers = list.filter((user) => user.category === filterCat);
-                    const filteredStatus = filteredUsers.filter((user) => user.status === filterStatus)
-                    setFilteredUser(filteredStatus);
-                }
-                setLoadingFilter(false)
-            }
-        }
-    }, [deneme, searchFilter, notification]);
 
     useEffect(() => {
         const newArray = [];
@@ -183,7 +161,7 @@ const RecentChats = () => {
         postNotify();
     }, [])
 
-    //create notifi
+   // create notifi  => recent2 render için ekle 
     useEffect(() => {
         const createNotify = async () => {
             if (!me || !recent2) return;
@@ -217,7 +195,7 @@ const RecentChats = () => {
             }
         };
         createNotify()
-    }, [loading, recent2])
+    }, [loading, ])
 
     ///get notifi
     useEffect(() => {
@@ -245,7 +223,7 @@ const RecentChats = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCount(count + 1);
-            console.log(count)
+           // console.log(count)
         }, 5000); // 5 saniyede bir çalışacak
 
         return () => clearInterval(interval); // Component unmount olduğunda interval'ı temizler
@@ -269,8 +247,6 @@ const RecentChats = () => {
                 config
             );
             setMesaj(data)
-            // console.log(mesaj, "bakıyoruz")
-            // console.log("deneme")
         };
         handleMessage();
     }, [selectedChat, fetch]);
@@ -306,7 +282,7 @@ const RecentChats = () => {
 
         const indices = findIndicesWithNewMessages();
         if (indices.length > 0) {
-            console.log("Yeni mesajların bulunduğu indeksler:");
+           // console.log("Yeni mesajların bulunduğu indeksler:");
             indices.forEach(indexData => {
                // console.log(`Index ${indexData.index} için yeni mesaj objesi:`, indexData.newMessage);
                 if (!notifi?.some(item => item._id === indexData.newMessage._id)) {
@@ -323,9 +299,6 @@ const RecentChats = () => {
         setRecent2(recent)
     }, [selectedChat, mesaj, messages, temporary])
 
-    // console.log(notifi, "notifiiii")
-
-    //  console.log(recent, "recent")
     function formatName(name) {
         const spaceIndex = name.indexOf(' ');
         let formattedName;
@@ -355,10 +328,10 @@ const RecentChats = () => {
             var groupNotifi;
             let singleNotifi;
             // Her kullanıcı için bildirim kontrolü
-            // console.log(user, "user")
+            
             if (user.isGroupChat == true) {
                 groupNotifi = notifi2?.find(notif => notif.latestMessage.chat === user._id);
-                //  console.log(groupNotifi, "groupNotifi")
+                
             }
 
             // notifi2 dizisindeki her bir öğeyi döngüye al
@@ -372,11 +345,9 @@ const RecentChats = () => {
                 }
             }
 
-            //   console.log(singleNotifi,"single")
-
             return (<>
                 {
-                    <div onClick={() => { handleUserClick(user, user._id); toggleColor(user._id); setFetch(!fetch); deleteNotify(singleNotifi?.messageId || groupNotifi?.messageId, me._id) }}
+                    <div onClick={() => {dispatch(setSearchFilter("")); handleUserClick(user, user._id); toggleColor(user._id); setFetch(!fetch); deleteNotify(singleNotifi?.messageId || groupNotifi?.messageId, me._id) }}
                         className={`${activeItems === user._id && "bg-white bg-opacity-20 rounded"} justify-between border-b border-gray-500 flex gap-3 items-center rounded-t-md hover:bg-white hover:bg-opacity-10 p-1 px-3 cursor-pointer`}
                         key={user._id}>
                         <div className="flex gap-3 items-center">
@@ -404,7 +375,7 @@ const RecentChats = () => {
 
     return (
         <div className={`lg:px-6 ${theme ? "text-slate-200" : "text-gray-600"} `}>
-            {filteredUser ? renderUserList() :
+            {list ? renderUserList() :
                 <div className="">
                     {loading ? <Stack>
                         <Skeleton height='50px' />
