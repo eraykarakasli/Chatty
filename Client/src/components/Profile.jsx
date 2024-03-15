@@ -161,8 +161,8 @@ const Profile = () => {
           <TiPlus size={40} />
         </div>
       }
-      <div className="absolute w-full h-[70px] bottom-0 ">
-        <div className="flex items-center justify-between border-t border-r border-gray-500 h-full">
+      <div className="absolute w-[400px] h-[70px] bottom-0 ">
+        <div className={` flex items-center justify-between border-t border-r border-gray-500 h-full `}>
           <div className="w-[50%]"> <MidOption /></div>
           <div className="w-[50%]"> <BottomOption /> </div>
         </div>
