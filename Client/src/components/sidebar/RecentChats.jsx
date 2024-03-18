@@ -49,7 +49,7 @@ const RecentChats = () => {
                         Authorization: `Bearer ${me.token}`,
                     },
                 };
-                const { data } = await axios.get("http://localhost:5000/api/chat", config);
+                const { data } = await axios.get("http://2.59.117.152:5000/api/chat", config);
                 setRecent(data)
             } catch (error) {
                 console.log(error)
@@ -122,7 +122,7 @@ const RecentChats = () => {
                 },
             };
             axios.delete(
-                `http://localhost:5000/api/notify/delete/`,
+                `http://2.59.117.152:5000/api/notify/delete/`,
                 {
                     data: { messageId: messageId, userId: userId },
                     headers: {
@@ -152,7 +152,7 @@ const RecentChats = () => {
                 },
             };
             const { data } = await axios.get(
-                `http://localhost:5000/api/message/${selectedChat._id}`,
+                `http://2.59.117.152:5000/api/message/${selectedChat._id}`,
                 config
             );
             setMesaj(data)
@@ -181,7 +181,7 @@ const RecentChats = () => {
                         users,
                     };
                     try {
-                        await axios.post(`http://localhost:5000/api/notify`, notifyData, config);
+                        await axios.post(`http://2.59.117.152:5000/api/notify`, notifyData, config);
                         // console.log('Başarıyla gönderildi:', notifyData);
 
                     } catch (error) {
@@ -207,7 +207,7 @@ const RecentChats = () => {
                     },
                 };
                 const userId = me._id;
-                const response = await axios.get(`http://localhost:5000/api/notify/${userId}`, config);
+                const response = await axios.get(`http://2.59.117.152:5000/api/notify/${userId}`, config);
                 setNotifi2(response.data);
 
             } catch (error) {
@@ -229,9 +229,6 @@ const RecentChats = () => {
     }, []); // useEffect'in sadece bir kere çalışmasını sağlar, bu yüzden bağımlılıklar array içinde boş bırakılır
 
 
-
-
-
     ///get messages
     useEffect(() => {
         const handleMessage = async () => {
@@ -242,7 +239,7 @@ const RecentChats = () => {
                 },
             };
             const { data } = await axios.get(
-                `http://localhost:5000/api/message/${selectedChat._id}`,
+                `http://2.59.117.152:5000/api/message/${selectedChat._id}`,
                 config
             );
             setMesaj(data)
@@ -351,7 +348,7 @@ const RecentChats = () => {
                         key={user._id}>
                         <div className="flex gap-3 items-center">
                             <div className="relative w-10">
-                                <img className="w-10 h-10 rounded-full" src={user.pic || "https://cdn1.iconfinder.com/data/icons/rounded-black-basic-ui/139/Profile_GroupFriend-RoundedBlack-512.png"} alt="" />
+                                <img className="w-10 h-10 rounded-full" src={user.pic || "https://cdn1.iconfinder.com/data/icons/rounded-black-basic-ui/139/Profile_GroupFriend-RoundedBlack-512.png"} alt="img" />
                             </div>
                             <div className="h-12">
                                 <div className="flex justify-between gap-3 items-center h-full  w-full truncate  font-semibold">

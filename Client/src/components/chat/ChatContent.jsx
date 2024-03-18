@@ -30,15 +30,15 @@ const ChatContent = () => {
       isGroupChat: false,
       latestMessage: "658d596371ec55a2da87848e",
       updatedAt: "2023-12-28T11:17:55.764Z",
-      users: [user._id, selectedChat.users[1]._id]
+      users: [user?._id, selectedChat?.users[1]._id]
     },
     content: temporary,
-    chatId: selectedChat._id,
+    chatId: selectedChat?._id,
     sender: {
-      email: user.email,
-      name: user.name,
-      pic: user.pic,
-      _id: user._id || "156151515186151984"
+      email: user?.email,
+      name: user?.name,
+      pic: user?.pic,
+      _id: user?._id || "156151515186151984"
     },
     updatedAt: "2023-12-28T11:17:55.764Z",
     createdAt: "2023-12-28T11:17:55.764Z",
@@ -67,7 +67,7 @@ const ChatContent = () => {
           },
         };
         const { data } = await axios.get(
-          `http://localhost:5000/api/message/${selectedChat._id}`,
+          `http://2.59.117.152:5000/api/message/${selectedChat._id}`,
           config
         );
 

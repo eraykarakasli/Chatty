@@ -27,7 +27,7 @@ const GroupMembers = () => {
                 },
             };
             try {
-                const response = await axios.get(`http://localhost:5000/api/user?search=`, config);
+                const response = await axios.get(`http://2.59.117.152:5000/api/user?search=`, config);
                 setUsers(response.data);
             } catch (error) {
                 console.error("Veri alınırken hata oluştu:", error);
@@ -48,7 +48,7 @@ const GroupMembers = () => {
                 chatId: selectedChat._id,
                 chatName: changeName
             }
-            await axios.put("http://localhost:5000/api/chat/rename", data, config);
+            await axios.put("http://2.59.117.152:5000/api/chat/rename", data, config);
             setHandleName(false)
         } catch (error) {
             console.log(error)
@@ -65,7 +65,7 @@ const GroupMembers = () => {
                 chatId: selectedChat._id,
                 userId: id
             }
-            await axios.put("http://localhost:5000/api/chat/groupremove", data, config);
+            await axios.put("http://2.59.117.152:5000/api/chat/groupremove", data, config);
 
         } catch (error) {
             console.log(error)
@@ -88,7 +88,7 @@ const GroupMembers = () => {
                 chatId: selectedChat._id,
                 userId: user._id
             }
-            await axios.put("http://localhost:5000/api/chat/groupadd", data, config);
+            await axios.put("http://2.59.117.152:5000/api/chat/groupadd", data, config);
 
         } catch (error) {
             console.log(error)

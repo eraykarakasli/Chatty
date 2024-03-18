@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-//http://localhost:5000
-//http://localhost:5000
+//http://2.59.117.152:5000
+//http://2.59.117.152:5000
 const initialState = {
-    PORT:"http://localhost:5000" ,
+    PORT:"http://2.59.117.152:5000" ,
 }
 
 export const portSlice = createSlice({

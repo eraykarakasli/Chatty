@@ -31,7 +31,7 @@ const Profile = () => {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        const response = await axios.get('http://localhost:5000/api/quick', config);
+        const response = await axios.get('http://2.59.117.152:5000/api/quick', config);
         if (response.data.length > 0) {
           const newQuick = response.data.filter(quick => quick.userId == user._id)
           setQuickMessages(newQuick);
@@ -60,7 +60,7 @@ const Profile = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const response = await axios.post('http://localhost:5000/api/quick', { userId: user._id, content: text }, config);
+      const response = await axios.post('http://2.59.117.152:5000/api/quick', { userId: user._id, content: text }, config);
       setQuickMessages([...quickMessages, response.data]);
       setText("");
       setInp(false);
@@ -96,7 +96,7 @@ const Profile = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      await axios.post('http://localhost:5000/api/quick/delete', { id }, config);
+      await axios.post('http://2.59.117.152:5000/api/quick/delete', { id }, config);
       setQuickMessages(quickMessages.filter(msg => msg._id !== id));
       setRender(!render)
       if (quickRender) {
@@ -161,7 +161,7 @@ const Profile = () => {
           <TiPlus size={40} />
         </div>
       }
-      <div className="absolute w-[400px] h-[70px] bottom-0 ">
+      <div className="absolute w-full h-[70px] bottom-0 ">
         <div className={` flex items-center justify-between border-t border-r border-gray-500 h-full `}>
           <div className="w-[50%]"> <MidOption /></div>
           <div className="w-[50%]"> <BottomOption /> </div>

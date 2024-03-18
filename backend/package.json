@@ -1,11 +1,11 @@
 {
   "name": "chat-app-createdbyeraykarakasli",
   "version": "1.0.0",
-  "proxy": "http://www.arifburakcavas.com.tr",
+  "proxy": "http://2.59.117.152",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "author": "eray-karakasli",
   "license": "ISC",

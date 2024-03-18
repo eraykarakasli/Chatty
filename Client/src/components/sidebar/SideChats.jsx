@@ -27,7 +27,7 @@ const SideChats = () => {
                 },
             };
             try {
-                const response = await axios.get(`http://localhost:5000/api/user?search=`, config);
+                const response = await axios.get(`http://2.59.117.152:5000/api/user?search=`, config);
                 setUsers(response.data);
             } catch (error) {
                 console.error("Veri alınırken hata oluştu:", error);
@@ -62,7 +62,7 @@ const SideChats = () => {
                     Authorization: `Bearer ${me.token}`,
                 },
             };
-            const { data } = await axios.post(`http://localhost:5000/api/chat`, { userId }, config);
+            const { data } = await axios.post(`http://2.59.117.152:5000/api/chat`, { userId }, config);
 
             
             
@@ -85,8 +85,8 @@ const SideChats = () => {
                     value={searchFilter}
                     placeholder="Aratın veya yeni sohbet başlatın..." />
             </div>
-            {searchFilter &&
-                <div className={`absolute z-50 w-full ${theme ? "bg-[#3f4552]" : "bg-[#7269EF] text-white"} p-3 rounded overflow-y-auto`}>
+            {(searchFilter && filteredUsers) &&
+                <div className={`absolute z-50 lg:w-[350px] w-full ${theme ? "bg-[#3f4552]" : "bg-[#7269EF] text-white"} p-3 rounded overflow-y-auto`}>
                     {
                         filteredUsers.map(user => (
                             <div onClick={()=> accessChat(user._id)} className="p-1 flex items-center gap-3 space-y-2 border-b border-gray-400 cursor-pointer hover:bg-white hover:bg-opacity-10 rounded-md">

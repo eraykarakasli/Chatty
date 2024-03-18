@@ -56,7 +56,7 @@ const CreateGroup = () => {
                 },
             };
             try {
-                const response = await axios.get(`http://localhost:5000/api/user?search=`, config);
+                const response = await axios.get(`http://2.59.117.152:5000/api/user?search=`, config);
                 setUsers(response.data);
             } catch (error) {
                 console.error("Veri alınırken hata oluştu:", error);
@@ -85,7 +85,7 @@ const CreateGroup = () => {
         }
         console.log(requestData,"requestdata")
         try {
-            await axios.post(`http://localhost:5000/api/chat/group`, requestData, config);
+            await axios.post(`http://2.59.117.152:5000/api/chat/group`, requestData, config);
             toast({
                 title: "Grup Başarıyla Oluşturuldu",
                 status: "success",
