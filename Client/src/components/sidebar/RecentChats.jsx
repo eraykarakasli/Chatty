@@ -23,13 +23,14 @@ const RecentChats = () => {
     const [activeItems, setActiveItems] = useState();
     const [list, setList] = useState();
     const [mesaj, setMesaj] = useState();
+    const [test, setTest] = useState();
     const [fetch, setFetch] = useState(false);
     const [recent2, setRecent2] = useState();
     const [notifi, setNotifi] = useState([]);
     const [notifi2, setNotifi2] = useState([]);
     const { temporary } = useSelector((state) => state.temporary);
     const [count, setCount] = useState(0);
-    const {filterChat} = useSelector((state) => state.navbar);
+    const { filterChat } = useSelector((state) => state.navbar);
 
     useEffect(() => {
         if (recentId) {
@@ -49,7 +50,7 @@ const RecentChats = () => {
                         Authorization: `Bearer ${me.token}`,
                     },
                 };
-                const { data } = await axios.get("http://2.59.117.152:5000/api/chat", config);
+                const { data } = await axios.get("http://localhost:5000/api/chat", config);
                 setRecent(data)
             } catch (error) {
                 console.log(error)
@@ -113,8 +114,9 @@ const RecentChats = () => {
         }
 
     }
-
+    console.log(notifi2)
     const deleteNotify = (messageId, userId) => {
+        
         if (selectedChat && me && me.token && messageId && userId) {
             const config = {
                 headers: {
@@ -122,24 +124,19 @@ const RecentChats = () => {
                 },
             };
             axios.delete(
-                `http://2.59.117.152:5000/api/notify/delete/`,
+                `http://localhost:5000/api/notify/delete/`,
                 {
                     data: { messageId: messageId, userId: userId },
                     headers: {
                         Authorization: `Bearer ${me.token}`,
                     },
                 }
-            ).then(response => {
-                // console.log("delete işlemi çalıştı");
-                //setNotifi([]);
-            }).catch(error => {
-                //console.log("delete hatası alıyorsun", error);
-                // Kullanıcıya bir hata bildirimi göster
-                // alert("Bir hata oluştu, lütfen daha sonra tekrar deneyin.");
-            });
+            )
         } else {
-            // Kullanıcıya bir hata bildirimi göster
+            // clg Kullanıcıya bir hata bildirimi göster
             // alert("Bir hata oluştu, lütfen daha sonra tekrar deneyin.");
+            console.log("deletenotify error")
+            
         }
     }
 
@@ -152,7 +149,7 @@ const RecentChats = () => {
                 },
             };
             const { data } = await axios.get(
-                `http://2.59.117.152:5000/api/message/${selectedChat._id}`,
+                `http://localhost:5000/api/message/${selectedChat._id}`,
                 config
             );
             setMesaj(data)
@@ -160,7 +157,7 @@ const RecentChats = () => {
         postNotify();
     }, [])
 
-   // create notifi  => recent2 render için ekle 
+    // create notifi  => recent2 render için ekle 
     useEffect(() => {
         const createNotify = async () => {
             if (!me || !recent2) return;
@@ -181,7 +178,7 @@ const RecentChats = () => {
                         users,
                     };
                     try {
-                        await axios.post(`http://2.59.117.152:5000/api/notify`, notifyData, config);
+                        await axios.post(`http://localhost:5000/api/notify`, notifyData, config);
                         // console.log('Başarıyla gönderildi:', notifyData);
 
                     } catch (error) {
@@ -189,12 +186,33 @@ const RecentChats = () => {
                     }
                 }
                 setNotifi([])
+
             } catch (error) {
                 console.error('Hata:', error);
             }
         };
         createNotify()
-    }, [loading,recent2 ])
+       // deleteNotify(selectedChat._id, me._id)
+        console.log("çalışıyor")
+    }, [loading,count])
+
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCount(prevCount => prevCount + 1); 
+          // deleteNotify(selectedChat._id, me._id)
+        }, 1000); 
+    
+        // useEffect hook'unun temizleme fonksiyonu ile interval'i temizle
+        return () => clearInterval(intervalId);
+    }, []);
+    
+    
+    
+    
+
+    //console.log(recent, recent2)
+    //recent2 ekle
 
     ///get notifi
     useEffect(() => {
@@ -207,7 +225,7 @@ const RecentChats = () => {
                     },
                 };
                 const userId = me._id;
-                const response = await axios.get(`http://2.59.117.152:5000/api/notify/${userId}`, config);
+                const response = await axios.get(`http://localhost:5000/api/notify/${userId}`, config);
                 setNotifi2(response.data);
 
             } catch (error) {
@@ -216,18 +234,7 @@ const RecentChats = () => {
         };
 
         getNotifi()
-    }, [messages, selectedChat, fetch, recent2, count]);
-
-    ///reder counter 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCount(count + 1);
-           // console.log(count)
-        }, 5000); // 5 saniyede bir çalışacak
-
-        return () => clearInterval(interval); // Component unmount olduğunda interval'ı temizler
-    }, []); // useEffect'in sadece bir kere çalışmasını sağlar, bu yüzden bağımlılıklar array içinde boş bırakılır
-
+    }, [messages, selectedChat, fetch, recent2]);
 
     ///get messages
     useEffect(() => {
@@ -239,7 +246,7 @@ const RecentChats = () => {
                 },
             };
             const { data } = await axios.get(
-                `http://2.59.117.152:5000/api/message/${selectedChat._id}`,
+                `http://localhost:5000/api/message/${selectedChat._id}`,
                 config
             );
             setMesaj(data)
@@ -278,9 +285,9 @@ const RecentChats = () => {
 
         const indices = findIndicesWithNewMessages();
         if (indices.length > 0) {
-           // console.log("Yeni mesajların bulunduğu indeksler:");
+            // console.log("Yeni mesajların bulunduğu indeksler:");
             indices.forEach(indexData => {
-               // console.log(`Index ${indexData.index} için yeni mesaj objesi:`, indexData.newMessage);
+                // console.log(`Index ${indexData.index} için yeni mesaj objesi:`, indexData.newMessage);
                 if (!notifi?.some(item => item._id === indexData.newMessage._id)) {
                     setNotifi(prev => [...prev, indexData.newMessage]);
                 }
@@ -318,33 +325,35 @@ const RecentChats = () => {
         setActiveItems(userId);
     };
 
-
     const renderUserList = () => {
         return list.map((user) => {
             var groupNotifi;
             let singleNotifi;
             // Her kullanıcı için bildirim kontrolü
-            
-            if (user.isGroupChat == true) {
-                groupNotifi = notifi2?.find(notif => notif.latestMessage.chat === user._id);
-                
-            }
 
+            if (user.isGroupChat == true  ) {
+                let testnotifi
+                testnotifi = notifi2?.find(notif => notif.latestMessage.chat === user._id);
+                if (testnotifi?.messageId !== selectedChat._id) {
+                    groupNotifi = testnotifi
+                }
+            }
+           // console.log(user,"user")
             // notifi2 dizisindeki her bir öğeyi döngüye al
             for (const item of notifi2) {
                 // item.latestMessage içindeki sender nesnesinin _id değerini al
                 const senderId = item.latestMessage.sender._id;
 
                 // Dışarıdan verilen kullanıcının _id değeri ile gönderenin _id'si eşleşiyorsa ve isGroupChat değeri false ise
-                if (user._id === senderId && item.isGroupChat === false) {
+                if (user._id === senderId && item.isGroupChat === false && selectedChat._id !== item.messageId) {
                     singleNotifi = item
                 }
             }
-
+          // deleteNotify(selectedChat._id, me._id)
             return (<>
                 {
-                    <div onClick={() => {dispatch(setSearchFilter("")); handleUserClick(user, user._id); toggleColor(user._id); setFetch(!fetch); deleteNotify(singleNotifi?.messageId || groupNotifi?.messageId, me._id) }}
-                        className={`${activeItems === user._id && `${theme ? "bg-white bg-opacity-20 ": "bg-gray-200"}  rounded`} justify-between border-b border-gray-500 flex gap-3 items-center rounded-t-md ${theme ? "hover:bg-white": "hover:bg-gray-700"}  hover:bg-opacity-10 p-1 px-3 cursor-pointer`}
+                    <div onClick={() => { dispatch(setSearchFilter("")); handleUserClick(user, user._id); toggleColor(user._id); setFetch(!fetch); deleteNotify(singleNotifi?.messageId || groupNotifi?.messageId, me._id) ;}}
+                        className={`${activeItems === user._id && `${theme ? "bg-white bg-opacity-20 " : "bg-gray-200"}  rounded`} justify-between border-b border-gray-500 flex gap-3 items-center rounded-t-md ${theme ? "hover:bg-white" : "hover:bg-gray-700"}  hover:bg-opacity-10 p-1 px-3 cursor-pointer`}
                         key={user._id}>
                         <div className="flex gap-3 items-center">
                             <div className="relative w-10">

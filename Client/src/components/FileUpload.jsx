@@ -21,7 +21,7 @@ const FileUpload = ({setIsFileJustUploaded}) => {
         formData.append('file', selectedFile);
 
         try {
-            const response = await fetch('http://2.59.117.152:5000/upload', {
+            const response = await fetch('http://localhost:5000/upload', {
                 method: 'POST',
                 body: formData,
             });

@@ -30,7 +30,7 @@ const ChatContent = () => {
       isGroupChat: false,
       latestMessage: "658d596371ec55a2da87848e",
       updatedAt: "2023-12-28T11:17:55.764Z",
-      users: [user?._id, selectedChat?.users[1]._id]
+      users: [user?._id, selectedChat?.users[1]?._id]
     },
     content: temporary,
     chatId: selectedChat?._id,
@@ -67,7 +67,7 @@ const ChatContent = () => {
           },
         };
         const { data } = await axios.get(
-          `http://2.59.117.152:5000/api/message/${selectedChat._id}`,
+          `http://localhost:5000/api/message/${selectedChat._id}`,
           config
         );
 
@@ -197,7 +197,7 @@ const ChatContent = () => {
                 // Mesaj alıcı tarafından gönderildiyse
                 <div className="flex gap-3  items-end">
                   <img className="w-10 h-10 rounded-full" src={msg.sender.pic} alt={msg.sender.name} />
-                  <div className="lg:w-[40%] w-[70%] rounded-md p-2 text-slate-100 bg-[#7269EF] truncate">
+                  <div className="lg:w-[40%] w-[70%] rounded-md p-2 text-slate-100 bg-[#7269EF]">
                     {formatContent(msg.content)}
                   </div>
                 </div>

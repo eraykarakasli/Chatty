@@ -44,9 +44,7 @@ const deleteNotify = asyncHandler(async (req, res) => {
 
     if (deletedNotify.deletedCount > 0) {
       return res.status(200).json({ message: "Bildirimler başarıyla silindi" });
-    } else {
-      return res.status(404).json({ message: "Silinecek bildirim bulunamadı" });
-    }
+    } 
   } catch (error) {
     console.error(`Hata: ${error}`);
     res.status(500).json({ message: "Sunucu hatası" });

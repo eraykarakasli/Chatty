@@ -82,7 +82,7 @@ const server = app.listen(
   const io = require("socket.io")(server, {
     pingTimeout: 60000,
     cors: {
-      origin: ["http://www.arifburakcavas.com.tr", "http://localhost:5173"],
+      origin: ["http://www.arifburakcavas.com.tr", "http://localhost:5173","http://localhost:4173","http://2.59.117.152:4173"],
     },
   });
   

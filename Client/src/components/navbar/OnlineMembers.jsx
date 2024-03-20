@@ -22,7 +22,7 @@ const OnlineMembers = () => {
                 },
             };
             try {
-                const response = await axios.get(`http://2.59.117.152:5000/api/user?search=`, config);
+                const response = await axios.get(`http://localhost:5000/api/user?search=`, config);
                 setUsers(response.data);
             } catch (error) {
                 console.error("Veri alınırken hata oluştu:", error);
@@ -40,7 +40,7 @@ const OnlineMembers = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const { data } = await axios.post(`http://2.59.117.152:5000/api/chat`, { userId }, config);
+            const { data } = await axios.post(`http://localhost:5000/api/chat`, { userId }, config);
 
             if (chats === null) {
                 setChats(data);

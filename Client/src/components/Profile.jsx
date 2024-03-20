@@ -31,7 +31,7 @@ const Profile = () => {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        const response = await axios.get('http://2.59.117.152:5000/api/quick', config);
+        const response = await axios.get('http://localhost:5000/api/quick', config);
         if (response.data.length > 0) {
           const newQuick = response.data.filter(quick => quick.userId == user._id)
           setQuickMessages(newQuick);
@@ -60,7 +60,7 @@ const Profile = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const response = await axios.post('http://2.59.117.152:5000/api/quick', { userId: user._id, content: text }, config);
+      const response = await axios.post('http://localhost:5000/api/quick', { userId: user._id, content: text }, config);
       setQuickMessages([...quickMessages, response.data]);
       setText("");
       setInp(false);
@@ -96,7 +96,7 @@ const Profile = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      await axios.post('http://2.59.117.152:5000/api/quick/delete', { id }, config);
+      await axios.post('http://localhost:5000/api/quick/delete', { id }, config);
       setQuickMessages(quickMessages.filter(msg => msg._id !== id));
       setRender(!render)
       if (quickRender) {

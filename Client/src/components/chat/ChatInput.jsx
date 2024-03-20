@@ -11,7 +11,7 @@ import { setFetchAgain, setListeLoading, setListeMessage, setNotification } from
 import { setTemporary } from '../../redux/features/temporarySlice';
 import FileUpload from '../FileUpload';
 import { setFile } from '../../redux/providerRedux/fileSlice';
-const ENDPOINT = "http://2.59.117.152:5000";
+const ENDPOINT = "http://localhost:5000";
 var socket, selectedChatCompare;
 
 const ChatInput = () => {
@@ -47,7 +47,7 @@ const ChatInput = () => {
       setLoading(true);
 
       const { data } = await axios.get(
-        `http://2.59.117.152:5000/api/message/${selectedChat._id}`,
+        `http://localhost:5000/api/message/${selectedChat._id}`,
         config
       );
       setMessages(data);
@@ -84,7 +84,7 @@ const ChatInput = () => {
         };
         setNewMessage("");
         const { data } = await axios.post(
-          "http://2.59.117.152:5000/api/message",
+          "http://localhost:5000/api/message",
           {
             content: messageToSend,
             chatId: selectedChat._id,
@@ -171,7 +171,7 @@ const ChatInput = () => {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        const response = await axios.get('http://2.59.117.152:5000/api/quick', config);
+        const response = await axios.get('http://localhost:5000/api/quick', config);
         if (response.data.length > 0) {
           const newQuick = response.data.filter(quick => quick.userId == user._id)
           setQuickMessages(newQuick);
