@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { FaPencilAlt, FaCheck, FaUserPlus, FaAngleDown } from "react-icons/fa";
 import axios from "axios";
 import { IoCloseSharp } from "react-icons/io5";
+import { openChat } from "../../redux/features/navbarSlice";
+import { setFullSidebar } from "../../redux/features/fullNavbar";
 
 const GroupMembers = () => {
     const { groupMembers } = useSelector((state) => state.navbar);
@@ -15,7 +17,7 @@ const GroupMembers = () => {
     const [openRemoveMenuForUser, setOpenRemoveMenuForUser] = useState(null);
     const me = JSON.parse(localStorage.getItem("userInfo"));
     const [users, setUsers] = useState([]);
-    
+
     const handleInputChange = (e) => {
         setChangeName(e.target.value);
     };
@@ -66,7 +68,7 @@ const GroupMembers = () => {
                 userId: id
             }
             await axios.put("http://localhost:5000/api/chat/groupremove", data, config);
-
+            dispatch(setFullSidebar(true))
         } catch (error) {
             console.log(error)
         }
@@ -94,11 +96,11 @@ const GroupMembers = () => {
             console.log(error)
         }
     }
-   
+
     const toggleRemoveMenuForUser = (userId) => {
         setOpenRemoveMenuForUser((prevUserId) => (prevUserId === userId ? null : userId));
     };
-
+  
     return (
         <div className={`${!theme ? "text-black" : "text-white"} w-full flex justify-center pt-10`}>
             {selectedChat &&
@@ -126,17 +128,19 @@ const GroupMembers = () => {
                         </div>
 
                         <div className="relative">
-                            <div onClick={() => setAddUser(true)} className="flex items-center gap-2 p-2  cursor-pointer">
-                                <div className="text-white rounded-full p-1 bg-[#7269EF]">
-                                    <FaUserPlus />
+                            {selectedChat.groupAdmin._id === me._id &&
+                                <div onClick={() => setAddUser(true)} className="flex items-center gap-2 p-2  cursor-pointer">
+                                    <div className="text-white rounded-full p-1 bg-[#7269EF]">
+                                        <FaUserPlus />
+                                    </div>
+                                    <div className="">
+                                        yeni üye ekle
+                                    </div>
                                 </div>
-                                <div className="">
-                                    yeni üye ekle
-                                </div>
-                            </div>
+                            }
 
                             {
-                                addUser &&
+                                (addUser && selectedChat.groupAdmin._id === me._id) &&
                                 <div className={` ${theme ? "bg-[#383e47]" : "bg-white"} absolute rounded z-50 w-full border border-[#7269EF] -mt-48 h-[400px] overflow-y-auto`}>
                                     <div className="flex items-center border-b border-[#7269EF] gap-2 p-2 cursor-pointer">
                                         <IoCloseSharp onClick={() => setAddUser(false)} size={20} /> Üye Ekle
@@ -157,8 +161,8 @@ const GroupMembers = () => {
                                                 .map((user) => (
                                                     <div className='border-b flex gap-2 p-2 rounded hover:bg-gray-200 cursor-pointer hover:bg-opacity-20 '
                                                         key={user.id}
-                                                        onClick={() => { handleAddUser(user); setSearchTerm("") ; setAddUser(false)}}>
-                                                        <img className='w-6 h-6 rounded-full' src={user.pic} alt="" />
+                                                        onClick={() => { handleAddUser(user); setSearchTerm(""); setAddUser(false); dispatch(setFullSidebar(true)) }}>
+                                                        <img className='w-6 h-6 rounded-full' src={user.pic} alt="img" />
                                                         {user.name}
                                                     </div>
                                                 ))
@@ -184,19 +188,19 @@ const GroupMembers = () => {
                                                     <img className="w-6 rounded-full" src={user.pic} alt="img" />
                                                     <div>{user.name}</div>
                                                 </div>
-                                               {(me._id === selectedChat.groupAdmin._id) &&
-                                                <div className="relative">
-                                                    <div onClick={() => toggleRemoveMenuForUser(user._id)} className="cursor-pointer">
-                                                        <FaAngleDown />
-                                                    </div>
-                                                    {openRemoveMenuForUser === user._id && (
-                                                        <div className="cursor-pointer absolute right-6" onClick={() => handleRemoveUser(user._id)}>
-                                                            <div className={`w-24  ${theme ? "bg-[#383f4b]": "bg-[#7269EF] text-white"} p-1 text-center text-sm hover:bg-red-700 rounded`}>
-                                                                çıkar
-                                                            </div>
+                                                {(me._id === selectedChat.groupAdmin._id) &&
+                                                    <div className="relative">
+                                                        <div onClick={() => toggleRemoveMenuForUser(user._id)} className="cursor-pointer">
+                                                            <FaAngleDown />
                                                         </div>
-                                                    )}
-                                                </div>
+                                                        {openRemoveMenuForUser === user._id && (
+                                                            <div className="cursor-pointer absolute right-6" onClick={() => handleRemoveUser(user._id)}>
+                                                                <div className={`w-24  ${theme ? "bg-[#383f4b]" : "bg-[#7269EF] text-white"} p-1 text-center text-sm hover:bg-red-700 rounded`}>
+                                                                    çıkar
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 }
                                             </div>
                                         )}

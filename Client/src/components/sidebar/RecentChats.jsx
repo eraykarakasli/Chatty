@@ -57,7 +57,7 @@ const RecentChats = () => {
             }
         };
         fetchChats();
-    }, [dispatch, me.token, filterCat, selectedChat, notification, render, notifi, filterChat])
+    }, [dispatch, me.token, filterCat, selectedChat, notification, render, notifi, filterChat, count])
 
     useEffect(() => {
         if (recent && recent.length > 0) {
@@ -91,8 +91,7 @@ const RecentChats = () => {
             }
         });
         setList(newArray)
-    }, [filterCat, deneme, filterStatus, searchFilter, notification, count]);
-
+    }, [filterCat, deneme, filterStatus, searchFilter, notification]);
 
     const handleUserClick = (user, id) => {
         dispatch(setStartChat(true))
@@ -112,11 +111,9 @@ const RecentChats = () => {
             dispatch(setSelectedChat(user))
             setRecentId(id);
         }
-
     }
-    console.log(notifi2)
+    
     const deleteNotify = (messageId, userId) => {
-        
         if (selectedChat && me && me.token && messageId && userId) {
             const config = {
                 headers: {
@@ -133,13 +130,26 @@ const RecentChats = () => {
                 }
             )
         } else {
-            // clg Kullanıcıya bir hata bildirimi göster
-            // alert("Bir hata oluştu, lütfen daha sonra tekrar deneyin.");
-            console.log("deletenotify error")
-            
+
         }
     }
 
+    useEffect(() => {
+        const deleteNotifyItems = () => {
+            notifi2.forEach(item => {
+                if (item.messageId === selectedChat._id) {
+                   
+                    if (item.users._id === me._id) {
+                        deleteNotify(item.messageId, item.users._id);
+                    }
+                   
+                }
+            });
+        };
+        //deleteNotifyItems()
+      
+    }, [count])
+    
     useEffect(() => {
         const postNotify = async () => {
             if (!me) return;
@@ -157,7 +167,6 @@ const RecentChats = () => {
         postNotify();
     }, [])
 
-    // create notifi  => recent2 render için ekle 
     useEffect(() => {
         const createNotify = async () => {
             if (!me || !recent2) return;
@@ -186,33 +195,25 @@ const RecentChats = () => {
                     }
                 }
                 setNotifi([])
-
             } catch (error) {
                 console.error('Hata:', error);
             }
         };
         createNotify()
-       // deleteNotify(selectedChat._id, me._id)
-        console.log("çalışıyor")
-    }, [loading,count])
-
-
+        //console.log("çalışıyor")
+    }, [loading, count])
+    console.log(notifi2)
+    // 2 second render
     useEffect(() => {
         const intervalId = setInterval(() => {
-            setCount(prevCount => prevCount + 1); 
-          // deleteNotify(selectedChat._id, me._id)
-        }, 1000); 
-    
+            setCount(prevCount => prevCount + 1);
+            // deleteNotifyItems(selectedChat._id, me._id)
+        }, 2000);
+        
         // useEffect hook'unun temizleme fonksiyonu ile interval'i temizle
         return () => clearInterval(intervalId);
+        
     }, []);
-    
-    
-    
-    
-
-    //console.log(recent, recent2)
-    //recent2 ekle
 
     ///get notifi
     useEffect(() => {
@@ -234,7 +235,9 @@ const RecentChats = () => {
         };
 
         getNotifi()
-    }, [messages, selectedChat, fetch, recent2]);
+       // deleteNotifyItems(selectedChat._id, me._id)
+        
+    }, [messages, fetch, recent2, selectedChat]);
 
     ///get messages
     useEffect(() => {
@@ -331,14 +334,14 @@ const RecentChats = () => {
             let singleNotifi;
             // Her kullanıcı için bildirim kontrolü
 
-            if (user.isGroupChat == true  ) {
+            if (user.isGroupChat == true) {
                 let testnotifi
                 testnotifi = notifi2?.find(notif => notif.latestMessage.chat === user._id);
                 if (testnotifi?.messageId !== selectedChat._id) {
                     groupNotifi = testnotifi
                 }
             }
-           // console.log(user,"user")
+            // console.log(user,"user")
             // notifi2 dizisindeki her bir öğeyi döngüye al
             for (const item of notifi2) {
                 // item.latestMessage içindeki sender nesnesinin _id değerini al
@@ -349,10 +352,10 @@ const RecentChats = () => {
                     singleNotifi = item
                 }
             }
-          // deleteNotify(selectedChat._id, me._id)
+
             return (<>
                 {
-                    <div onClick={() => { dispatch(setSearchFilter("")); handleUserClick(user, user._id); toggleColor(user._id); setFetch(!fetch); deleteNotify(singleNotifi?.messageId || groupNotifi?.messageId, me._id) ;}}
+                    <div onClick={() => { dispatch(setSearchFilter("")); handleUserClick(user, user._id); toggleColor(user._id); setFetch(!fetch); deleteNotify(singleNotifi?.messageId || groupNotifi?.messageId, me._id); }}
                         className={`${activeItems === user._id && `${theme ? "bg-white bg-opacity-20 " : "bg-gray-200"}  rounded`} justify-between border-b border-gray-500 flex gap-3 items-center rounded-t-md ${theme ? "hover:bg-white" : "hover:bg-gray-700"}  hover:bg-opacity-10 p-1 px-3 cursor-pointer`}
                         key={user._id}>
                         <div className="flex gap-3 items-center">
