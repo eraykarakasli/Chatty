@@ -23,15 +23,18 @@ const RecentChats = () => {
     const [activeItems, setActiveItems] = useState();
     const [list, setList] = useState();
     const [mesaj, setMesaj] = useState();
-    const [test, setTest] = useState();
+    const [selectedNotifi, setSelectedNotifi] = useState([]);
     const [fetch, setFetch] = useState(false);
     const [recent2, setRecent2] = useState();
+    const [test, setTest] = useState();
     const [notifi, setNotifi] = useState([]);
+    const [notifiLength, setNotifiLength] = useState([]);
     const [notifi2, setNotifi2] = useState([]);
     const { temporary } = useSelector((state) => state.temporary);
     const [count, setCount] = useState(0);
+    const [countNotifi, setCountNotifi] = useState(0);
     const { filterChat } = useSelector((state) => state.navbar);
-
+    const [lastId, setLastId] = useState(null);
     useEffect(() => {
         if (recentId) {
             notification.forEach(notif => {
@@ -112,7 +115,7 @@ const RecentChats = () => {
             setRecentId(id);
         }
     }
-    
+
     const deleteNotify = (messageId, userId) => {
         if (selectedChat && me && me.token && messageId && userId) {
             const config = {
@@ -129,27 +132,56 @@ const RecentChats = () => {
                     },
                 }
             )
+            console.log("sildim ")
         } else {
 
         }
     }
 
     useEffect(() => {
+
         const deleteNotifyItems = () => {
+
             notifi2.forEach(item => {
                 if (item.messageId === selectedChat._id) {
-                   
                     if (item.users._id === me._id) {
-                        deleteNotify(item.messageId, item.users._id);
+                        axios.delete(
+                            `http://localhost:5000/api/notify/delete/`,
+                            {
+                                data: { messageId: selectedChat._id, userId: me._id },
+                                headers: {
+                                    Authorization: `Bearer ${me.token}`,
+                                },
+                            }
+                        )
+                        console.log("bagacaaaz")
+
                     }
-                   
                 }
             });
+
         };
-        //deleteNotifyItems()
-      
-    }, [count])
-    
+        deleteNotifyItems()
+
+    }, [notifiLength, count])
+
+    console.log("neden")
+    useEffect(() => {
+        if (notifi2.length > 0) {
+          const lastIndex = notifi2.length - 1;
+          setLastId(notifi2[lastIndex]._id);
+        }
+      }, [notifi2])
+
+    useEffect(() => {
+        setNotifiLength(notifi2.length)
+    }, [notifi2])
+
+    useEffect(() => {
+        setCountNotifi(prevCounter => prevCounter + 1)
+        console.log("tetiklendi")
+    }, [notifiLength])
+
     useEffect(() => {
         const postNotify = async () => {
             if (!me) return;
@@ -209,10 +241,10 @@ const RecentChats = () => {
             setCount(prevCount => prevCount + 1);
             // deleteNotifyItems(selectedChat._id, me._id)
         }, 2000);
-        
+
         // useEffect hook'unun temizleme fonksiyonu ile interval'i temizle
         return () => clearInterval(intervalId);
-        
+
     }, []);
 
     ///get notifi
@@ -228,17 +260,17 @@ const RecentChats = () => {
                 const userId = me._id;
                 const response = await axios.get(`http://localhost:5000/api/notify/${userId}`, config);
                 setNotifi2(response.data);
-
+                console.log("notifi2 istek")
             } catch (error) {
                 console.error('Hata:', error);
             }
         };
 
         getNotifi()
-       // deleteNotifyItems(selectedChat._id, me._id)
-        
-    }, [messages, fetch, recent2, selectedChat]);
+        // deleteNotifyItems(selectedChat._id, me._id)
 
+    }, [fetch, notifi, count]);
+    /// => sildim recent2, selectedChat
     ///get messages
     useEffect(() => {
         const handleMessage = async () => {
@@ -338,7 +370,10 @@ const RecentChats = () => {
                 let testnotifi
                 testnotifi = notifi2?.find(notif => notif.latestMessage.chat === user._id);
                 if (testnotifi?.messageId !== selectedChat._id) {
+
                     groupNotifi = testnotifi
+
+
                 }
             }
             // console.log(user,"user")
@@ -349,7 +384,10 @@ const RecentChats = () => {
 
                 // Dışarıdan verilen kullanıcının _id değeri ile gönderenin _id'si eşleşiyorsa ve isGroupChat değeri false ise
                 if (user._id === senderId && item.isGroupChat === false && selectedChat._id !== item.messageId) {
+
+
                     singleNotifi = item
+
                 }
             }
 
