@@ -139,14 +139,15 @@ const RecentChats = () => {
         }
     }
 
-
+    console.log(messageIds.length)
     useEffect(() => {
-        const newMessageIds = notifi2.map(item => item.messageId);
-        setMessageIds(prevIds => {
-            const uniqueIds = new Set([...prevIds, ...newMessageIds]);
-            return Array.from(uniqueIds);
-        });
+        // Yeni message ID'leri bir Set'e ekleyerek eşsiz hale getir
+        const newMessageIds = new Set(notifi2.map(item => item.messageId));
 
+        // Yeni message ID'leri messageIds state'ine ayarla
+        setMessageIds(Array.from(newMessageIds));
+
+        // Counter'ı güncelle
         const config = {
             headers: {
                 Authorization: `Bearer ${me.token}`,
@@ -154,10 +155,11 @@ const RecentChats = () => {
         };
         const data = {
             userId: me._id,
-            counterValue: messageIds.length
-        }
-        axios.post(`http://localhost:5000/api/counter`, data, config)
+            counterValue: newMessageIds.size // Yeni message ID sayısını kullan
+        };
+        axios.post(`http://localhost:5000/api/counter`, data, config);
     }, [notifi2]);
+
 
     useEffect(() => {
 

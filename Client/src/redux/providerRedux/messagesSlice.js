@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   notification: [],
   fetchAgain: false,
+  contentMessage: [],
 };
 
 export const messagesSlice = createSlice({
@@ -37,6 +38,9 @@ export const messagesSlice = createSlice({
     setFetchAgain: (state, action) => {
       state.fetchAgain = action.payload;
     },
+    setContentMessage: (state, action) => {
+      state.contentMessage = action.payload;
+    },
   },
 });
 
@@ -48,6 +52,7 @@ export const {
   setNotification,
   setFetchAgain,
   removeNotification,
+  setContentMessage,
 } = messagesSlice.actions;
 
 export default messagesSlice.reducer;
