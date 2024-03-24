@@ -35,6 +35,8 @@ const RecentChats = () => {
     const [countNotifi, setCountNotifi] = useState(0);
     const { filterChat } = useSelector((state) => state.navbar);
     const [lastId, setLastId] = useState(null);
+    const [messageIds, setMessageIds] = useState([]);
+
     useEffect(() => {
         if (recentId) {
             notification.forEach(notif => {
@@ -132,11 +134,30 @@ const RecentChats = () => {
                     },
                 }
             )
-            console.log("sildim ")
         } else {
 
         }
     }
+
+
+    useEffect(() => {
+        const newMessageIds = notifi2.map(item => item.messageId);
+        setMessageIds(prevIds => {
+            const uniqueIds = new Set([...prevIds, ...newMessageIds]);
+            return Array.from(uniqueIds);
+        });
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${me.token}`,
+            },
+        };
+        const data = {
+            userId: me._id,
+            counterValue: messageIds.length
+        }
+        axios.post(`http://localhost:5000/api/counter`, data, config)
+    }, [notifi2]);
 
     useEffect(() => {
 
@@ -165,13 +186,14 @@ const RecentChats = () => {
 
     }, [notifiLength, count])
 
-    console.log("neden")
+
+    console.log(notifi2, "notifi2")
     useEffect(() => {
         if (notifi2.length > 0) {
-          const lastIndex = notifi2.length - 1;
-          setLastId(notifi2[lastIndex]._id);
+            const lastIndex = notifi2.length - 1;
+            setLastId(notifi2[lastIndex]._id);
         }
-      }, [notifi2])
+    }, [notifi2])
 
     useEffect(() => {
         setNotifiLength(notifi2.length)

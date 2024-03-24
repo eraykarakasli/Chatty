@@ -8,6 +8,7 @@ const userRoutes = require("./routes/userRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const quickRoutes = require("./routes/quickRoutes");
 const notifyRoutes = require("./routes/notifyRoutes");
+const counterRoutes = require("./routes/counterRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const path = require('path');
@@ -33,6 +34,7 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/quick", quickRoutes);
 app.use("/api/notify", notifyRoutes);    
+app.use("/api/counter", counterRoutes);    
 
 
 /////////////
