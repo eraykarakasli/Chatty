@@ -44,7 +44,7 @@ const FullHome = () => {
             {
                 profilePop && <div className="absolute bottom-16 right-32"><BottomPopUp /></div>
             }
-
+                
         </div>
     )
 }

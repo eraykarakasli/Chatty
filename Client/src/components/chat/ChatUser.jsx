@@ -70,11 +70,11 @@ const ChatUser = () => {
                 <div className="flex items-center">
                     <div onClick={() => {dispatch(setFullSidebar(true)); dispatch(openGroupMembers(false))}} className="block cursor-pointer lg:hidden "><MdChevronLeft size={24} /></div>
                     {findUser && (
-                        <div className="p-3 flex items-center gap-3 font-semibold text-lg ">
-                            <img className="2xl:w-12 2xl:h-12 md:h-10 md:w-10  min-[320px]:h-[35px]  rounded-full" src={findUser.pic || "https://cdn1.iconfinder.com/data/icons/rounded-black-basic-ui/139/Profile_GroupFriend-RoundedBlack-512.png"} />
+                        <div className="px-3 flex items-center gap-3 font-semibold text-lg">
+                           
                             <div className="">
                                 <div>{findUser.name || findUser.chatName} </div>
-                                <div>
+                                <div className="pb-1">
                                     {
                                         findUser.isGroupChat &&
                                         <div className="flex truncate gap-1 text-xs font-normal">

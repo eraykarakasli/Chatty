@@ -191,12 +191,12 @@ const ChatContent = () => {
                   <div className="lg:w-[41%] w-[70%]  rounded-md p-2 text-gray-900 bg-[#c6c5d2]">
                     {formatContent(msg.content)}
                   </div>
-                  <img className="w-10 h-10 rounded-full" src={user.pic} alt={user.name} />
+                  {/* <img className="w-10 h-10 rounded-full" src={user.pic} alt={user.name} /> */}
                 </div>
               ) : (
                 // Mesaj alıcı tarafından gönderildiyse
                 <div className="flex gap-3  items-end">
-                  <img className="w-10 h-10 rounded-full" src={msg.sender.pic} alt={msg.sender.name} />
+                  {/* <img className="w-10 h-10 rounded-full" src={msg.sender.pic} alt={msg.sender.name} /> */}
                   <div className="lg:w-[40%] w-[70%] rounded-md p-2 text-slate-100 bg-[#7269EF]">
                     {formatContent(msg.content)}
                   </div>
@@ -205,12 +205,12 @@ const ChatContent = () => {
               {isSender ?
                 //  Sender
                 <div className="flex items-center justify-end mt-1">
-                  <div className="flex justify-end text-xs font-semibold lg:w-[40%] w-[70%] px-14">{formatTimeShort(msg.createdAt)}</div>
+                  <div className="flex justify-end text-xs font-semibold lg:w-[40%] w-[70%] px-2">{formatTimeShort(msg.createdAt)}</div>
                 </div> :
                 // receiver
                 <div className={`flex items-center gap-14`}>
                   <div className={` text-sm   mt-1 w-[19%] `}>{isSender ? formatName(user.name) : formatName(msg.sender.name)}</div>
-                  <div className={`flex justify-end text-xs font-semibold lg:w-[22%] w-[53%] px-6`}>{formatTimeShort(msg.createdAt)}</div>
+                  <div className={`flex justify-end text-xs font-semibold lg:w-[22%] w-[53%] px-20`}>{formatTimeShort(msg.createdAt)}</div>
                 </div>
               }
             </div>

@@ -8,15 +8,15 @@ const FullChat = () => {
     const { groupMembers } = useSelector((state) => state.navbar);
     return (
         <div className='h-screen'>
-            <div className='h-[8%]'>
+            <div className='h-[6%]'>
                 <ChatUser />
             </div>
             {!groupMembers ?
                 <>
-                    <div className='h-[84%] overflow-y-scroll'>
+                    <div className='h-[85%] overflow-y-scroll'>
                         <ChatContent />
                     </div>
-                    <div className='h-[8%]'>
+                    <div className='h-[9%]'>
                         <ChatInput />
                     </div>
                 </> :
