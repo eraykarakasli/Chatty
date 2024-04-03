@@ -11,6 +11,7 @@ import { setQuickRender } from '../redux/features/quickMessageSlice';
 import { useToast } from "@chakra-ui/react";
 import MidOption from './navbar/MidOption';
 import BottomOption from './navbar/BottomOption';
+import FullNavbar from './navbar/FullNavbar';
 
 const Profile = () => {
   const dispatch = useDispatch()
@@ -126,7 +127,7 @@ const Profile = () => {
 
   return (
     <div className={`${theme ? "text-slate-200" : "text-gray-600"} lg:min-w-[400px] lg:max-w-[400px] w-full h-screen border-r border-gray-500`}>
-      <div className='h-[83%] w-full overflow-auto'>
+      <div className='h-[84%] w-full overflow-auto'>
         <div className='h-[9.6%] w-full border-b border-gray-500 flex items-center px-4 text-2xl font-bold '>
           <div onClick={() => dispatch(setFullSidebar(true))} className='pr-2 block lg:hidden cursor-pointer'>
             <MdChevronLeft size={24} />
@@ -161,11 +162,14 @@ const Profile = () => {
           <TiPlus size={40} />
         </div>
       }
-      <div className="absolute w-full h-[65px] lg:h-[70px] bottom-0 lg:max-w-[400px]">
+      {/* <div className="absolute w-full h-[65px] lg:h-[70px] bottom-0 lg:max-w-[400px]">
         <div className={` flex items-center justify-between border-t border-gray-500  h-full `}>
           <div className="w-[50%]"> <MidOption /></div>
           <div className="w-[50%]"> <BottomOption /> </div>
         </div>
+      </div> */}
+      <div className='border-t  border-gray-400 h-[55px] '>
+        <FullNavbar />
       </div>
     </div>
   );

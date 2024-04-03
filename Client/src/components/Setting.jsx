@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setFullSidebar } from "../redux/features/fullNavbar"
 import MidOption from "./navbar/MidOption"
 import BottomOption from "./navbar/BottomOption"
+import FullNavbar from "./navbar/FullNavbar"
 
 const Setting = () => {
   const dispatch = useDispatch()
@@ -10,7 +11,7 @@ const Setting = () => {
   const { theme } = useSelector((state) => state.theme);
 
   return (
-    <div className={`${theme ? "text-slate-200" : "bg-[#F5F7FB] text-gray-600"} min-w-[400px] h-screen border-r border-gray-500  lg:block`}>
+    <div className={`${theme ? "text-slate-200" : "bg-[#F5F7FB] text-gray-600"} min-w-[400px]  h-screen border-r border-gray-500  lg:block`}>
       <div className="text-2xl font-bold  h-[8%]  flex items-center px-4 gap-1 border-b border-gray-500">
         <div onClick={() => dispatch(setFullSidebar(true))} className="block lg:hidden cursor-pointer"><MdChevronLeft size={24} /></div>
         Hesabım
@@ -25,12 +26,6 @@ const Setting = () => {
           </div>
         </div>
       </div>
-
-      <div className="flex items-center justify-between border-t border-gray-500 h-[8%]">
-        <div className="w-[50%]"> <MidOption /></div>
-        <div className="w-[50%]"> <BottomOption /> </div>
-      </div>
-
     </div>
   )
 }

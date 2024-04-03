@@ -17,7 +17,7 @@ const Sidebar = () => {
  
   
   return (
-    <div className={`${theme ? "text-slate-200" : "bg-[#F5F7FB] text-gray-600"} min-w-[400px] max-w-[400px] h-screen border-r border-gray-500 hidden lg:block`}>
+    <div className={`${theme ? "text-slate-200" : "bg-[#F5F7FB] text-gray-600"} flex justify-center items-center h-screen border-r border-gray-500 hidden lg:block`}>
       {me.role !== "user" &&
         <>
           <div className="text-2xl font-bold  h-[8%]  flex items-center px-4 border-b border-gray-500">Sohbet</div>
@@ -36,12 +36,8 @@ const Sidebar = () => {
         <RecentChats /> 
       </div>
 
-      <div className={`absolute w-[400px] h-[70px] bottom-0 ${theme ? "bg-gray-700" : "bg-[#F5F7FB]"} `}>
-        <div className="flex items-center justify-between border-t border-r border-gray-500 h-full ">
-      
-          <div className="w-[50%]"><MidOption /></div>
-          <div className="w-[50%]"><BottomOption /></div>
-        </div>
+      <div className='border-t  border-gray-400 h-[80px] '>
+        <FullNavbar />
       </div>
     </div>
   )

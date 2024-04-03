@@ -4,7 +4,7 @@ import { BiMessageRoundedAdd, BiMessageRoundedDetail } from "react-icons/bi";
 import { openChat, openProfile } from "../../redux/features/navbarSlice";
 import { setTeheme } from "../../redux/features/themeSlice";
 import { MdLightMode, MdOutlineDarkMode } from "react-icons/md";
-import { setFullChat, setFullQuick, setFullSetting } from "../../redux/features/fullNavbar";
+import { setFullChat, setFullQuick, setFullSetting, setFullSidebar } from "../../redux/features/fullNavbar";
 import { setProfilePop } from "../../redux/features/profilePopSlice";
 
 
@@ -19,8 +19,8 @@ const FullNavbar = () => {
             <div className={`w-full h-full `}>
 
                 <div className={`w-full h-full flex justify-between items-center px-6`}>
-                    <div onClick={() => dispatch(setFullChat(true))} className="">
-                        <div onClick={() => dispatch(openChat())} className="w-full flex justify-center">
+                    <div onClick={() => dispatch(setFullSidebar(true))} className="">
+                        <div className="w-full flex justify-center">
                             <BiMessageRoundedDetail className={`hover:bg-gray-500  p-2 rounded-md hover:bg-opacity-10 cursor-pointer duration-500   ${(nav || groupOpen) ? "bg-white bg-opacity-10 text-[#7269EF]" : "text-gray-400 "} `} size={48} />
                         </div>
                     </div>

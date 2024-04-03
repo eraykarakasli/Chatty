@@ -26,7 +26,7 @@ const FullHome = () => {
                         </div>
                     </div>
                     {!groupChat &&
-                        <div className="h-[8%] border-t border-gray-400">
+                        <div className="h-[55px] border-t border-gray-400">
                             <FullNavbar />
                         </div>
                     }

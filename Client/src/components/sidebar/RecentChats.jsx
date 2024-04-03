@@ -392,8 +392,8 @@ const RecentChats = () => {
 
             if (user.isGroupChat == true) {
                 let testnotifi
-                testnotifi = notifi2?.find(notif => notif.latestMessage.chat === user._id);
-                if (testnotifi?.messageId !== selectedChat._id) {
+                testnotifi = notifi2?.find(notif => notif.latestMessage.chat === user?._id);
+                if (testnotifi?.messageId !== selectedChat?._id) {
 
                     groupNotifi = testnotifi
 
@@ -407,7 +407,7 @@ const RecentChats = () => {
                 const senderId = item.latestMessage.sender._id;
 
                 // Dışarıdan verilen kullanıcının _id değeri ile gönderenin _id'si eşleşiyorsa ve isGroupChat değeri false ise
-                if (user._id === senderId && item.isGroupChat === false && selectedChat._id !== item.messageId) {
+                if (user._id === senderId && item.isGroupChat === false && selectedChat?._id !== item.messageId) {
 
 
                     singleNotifi = item

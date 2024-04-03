@@ -4,7 +4,7 @@ import Setting from './Setting'
 const FullSetting = () => {
     
   return (
-    <div className='border'>
+    <div className=''>
        <Setting />
     </div>
   )
