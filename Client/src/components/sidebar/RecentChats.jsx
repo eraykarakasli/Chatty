@@ -97,7 +97,7 @@ const RecentChats = () => {
         });
         setList(newArray)
     }, [filterCat, deneme, filterStatus, searchFilter, notification]);
-
+   
     const handleUserClick = (user, id) => {
         dispatch(setStartChat(true))
         dispatch(setFullChat(true));
@@ -120,11 +120,6 @@ const RecentChats = () => {
 
     const deleteNotify = (messageId, userId) => {
         if (selectedChat && me && me.token && messageId && userId) {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${me.token}`,
-                },
-            };
             axios.delete(
                 `http://localhost:5000/api/notify/delete/`,
                 {
@@ -139,7 +134,7 @@ const RecentChats = () => {
         }
     }
 
-    console.log(messageIds.length)
+    // console.log(messageIds.length)
     useEffect(() => {
         // Yeni message ID'leri bir Set'e ekleyerek eşsiz hale getir
         const newMessageIds = new Set(notifi2.map(item => item.messageId));
@@ -158,38 +153,50 @@ const RecentChats = () => {
             counterValue: newMessageIds.size // Yeni message ID sayısını kullan
         };
         axios.post(`http://localhost:5000/api/counter`, data, config);
-    }, [notifi2]);
+    }, [notifiLength]);
 
+    const cancelTokenSource = axios.CancelToken.source();
 
     useEffect(() => {
-
-        const deleteNotifyItems = () => {
-
-            notifi2.forEach(item => {
-                if (item.messageId === selectedChat._id) {
-                    if (item.users._id === me._id) {
-                        axios.delete(
+        const deleteNotifyItems = async () => {
+            for (const item of notifi2) {
+                if (item.messageId === selectedChat?._id && item.users?._id === me?._id) {
+                    try {
+                        await axios.delete(
                             `http://localhost:5000/api/notify/delete/`,
                             {
                                 data: { messageId: selectedChat._id, userId: me._id },
                                 headers: {
                                     Authorization: `Bearer ${me.token}`,
                                 },
+                                timeout: 2000,
+                                cancelToken: cancelTokenSource.token,
                             }
-                        )
-                        console.log("bagacaaaz")
-
+                        );
+                    } catch (error) {
+                        if (!axios.isCancel(error)) {
+                            // Sadece iptal hatası değilse hata konsola yazdırılır
+                            console.error('Hata:', error);
+                        }
                     }
                 }
-            });
-
+            }
         };
-        deleteNotifyItems()
 
-    }, [notifiLength, count])
+        deleteNotifyItems();
+
+        // cleanup function
+        return () => {
+            cancelTokenSource.cancel('İstek kullanıcı tarafından iptal edildi.');
+        };
+    }, [notifiLength, count, cancelTokenSource]);
 
 
-    console.log(notifi2, "notifi2")
+
+
+
+
+    // console.log(notifi2, "notifi2")
     useEffect(() => {
         if (notifi2.length > 0) {
             const lastIndex = notifi2.length - 1;
@@ -203,12 +210,12 @@ const RecentChats = () => {
 
     useEffect(() => {
         setCountNotifi(prevCounter => prevCounter + 1)
-        console.log("tetiklendi")
+        //   console.log("tetiklendi")
     }, [notifiLength])
 
     useEffect(() => {
         const postNotify = async () => {
-            if (!me) return;
+            if (!me || !selectedChat._id) return;
             const config = {
                 headers: {
                     Authorization: `Bearer ${me.token}`,
@@ -258,7 +265,7 @@ const RecentChats = () => {
         createNotify()
         //console.log("çalışıyor")
     }, [loading, count])
-    console.log(notifi2)
+    //  console.log(notifi2)
     // 2 second render
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -284,7 +291,7 @@ const RecentChats = () => {
                 const userId = me._id;
                 const response = await axios.get(`http://localhost:5000/api/notify/${userId}`, config);
                 setNotifi2(response.data);
-                console.log("notifi2 istek")
+                // console.log("notifi2 istek")
             } catch (error) {
                 console.error('Hata:', error);
             }
@@ -298,17 +305,19 @@ const RecentChats = () => {
     ///get messages
     useEffect(() => {
         const handleMessage = async () => {
-            if (!me) return;
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${me.token}`,
-                },
-            };
-            const { data } = await axios.get(
-                `http://localhost:5000/api/message/${selectedChat._id}`,
-                config
-            );
-            setMesaj(data)
+            if (selectedChat) {
+                if (!me || selectedChat._id) return;
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${me.token}`,
+                    },
+                };
+                const { data } = await axios.get(
+                    `http://localhost:5000/api/message/${selectedChat._id}`,
+                    config
+                );
+                setMesaj(data)
+            }
         };
         handleMessage();
     }, [selectedChat, fetch]);
@@ -328,7 +337,6 @@ const RecentChats = () => {
                     //  console.log("latest mesaj içeriği ulaşılamıyor");
                     continue;
                 }
-
                 const id1 = latestMessage1._id;
                 const id2 = latestMessage2._id;
 

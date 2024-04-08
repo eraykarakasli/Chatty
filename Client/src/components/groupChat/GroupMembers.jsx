@@ -64,7 +64,7 @@ const GroupMembers = () => {
                 },
             };
             const data = {
-                chatId: selectedChat._id,
+                chatId: selectedChat?._id,
                 userId: id
             }
             await axios.put("http://localhost:5000/api/chat/groupremove", data, config);
@@ -128,7 +128,7 @@ const GroupMembers = () => {
                         </div>
 
                         <div className="relative">
-                            {selectedChat.groupAdmin._id === me._id &&
+                            {selectedChat.groupAdmin?._id === me?._id &&
                                 <div onClick={() => setAddUser(true)} className="flex items-center gap-2 p-2  cursor-pointer">
                                     <div className="text-white rounded-full p-1 bg-[#7269EF]">
                                         <FaUserPlus />

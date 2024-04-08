@@ -23,33 +23,33 @@ const ChatContent = () => {
   const [lastFetchedMessages, setLastFetchedMessages] = useState([]);
   const dispatch = useDispatch()
 
-  const tempMessage = {
-    chat: {
-      chatName: "sender",
-      createdAt: "2023-12-25T12:20:36.868Z",
-      isGroupChat: false,
-      latestMessage: "658d596371ec55a2da87848e",
-      updatedAt: "2023-12-28T11:17:55.764Z",
-      users: [user?._id, selectedChat?.users[1]?._id]
-    },
-    content: temporary,
-    chatId: selectedChat?._id,
-    sender: {
-      email: user?.email,
-      name: user?.name,
-      pic: user?.pic,
-      _id: user?._id || "156151515186151984"
-    },
-    updatedAt: "2023-12-28T11:17:55.764Z",
-    createdAt: "2023-12-28T11:17:55.764Z",
-    __v: 0,
-    _id: `id-${Date.now()}-${Math.random()}`
-  };
+  // const tempMessage = {
+  //   chat: {
+  //     chatName: "sender",
+  //     createdAt: "2023-12-25T12:20:36.868Z",
+  //     isGroupChat: false,
+  //     latestMessage: "658d596371ec55a2da87848e",
+  //     updatedAt: "2023-12-28T11:17:55.764Z",
+  //     users: [user?._id, selectedChat?.users[1]?._id]
+  //   },
+  //   content: temporary,
+  //   chatId: selectedChat?._id,
+  //   sender: {
+  //     email: user?.email,
+  //     name: user?.name,
+  //     pic: user?.pic,
+  //     _id: user?._id || "156151515186151984"
+  //   },
+  //   updatedAt: "2023-12-28T11:17:55.764Z",
+  //   createdAt: "2023-12-28T11:17:55.764Z",
+  //   __v: 0,
+  //   _id: `id-${Date.now()}-${Math.random()}`
+  // };
 
   const areMessagesSame = (messages1, messages2) => {
     if (messages1.length !== messages2.length) return false;
     for (let i = 0; i < messages1.length; i++) {
-      if (messages1[i]._id !== messages2[i]._id) return false;
+      if (messages1[i]?._id !== messages2[i]?._id) return false;
     }
     return true;
   };
@@ -58,17 +58,18 @@ const ChatContent = () => {
     const handleMessage = async () => {
       if (!selectedChat) return;
       try {
-        if (user && temporary) {
-          messages.push(tempMessage)
-        }
+        // if (user && temporary) {
+        //   messages.push(tempMessage)
+        // }
         const config = {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
+         
         };
         const { data } = await axios.get(
-          `http://localhost:5000/api/message/${selectedChat._id}`,
-          config
+          `http://localhost:5000/api/message/${selectedChat?._id}`,
+          config,
         );
 
         if (!areMessagesSame(data, lastFetchedMessages)) {
@@ -182,7 +183,7 @@ const ChatContent = () => {
     <div id="chat-container" className={` h-full p-10 overflow-y-scroll overflow-x-hidden space-y-1 ${theme ? "" : "text-gray-500"}`}>
       {isMessagesArray && !loading ? (
         messages.map((msg) => {
-          const isSender = msg.sender?._id === user._id;
+          const isSender = msg.sender?._id === user?._id;
           return (
             <div key={msg._id} className="w-full  mt-1">
               {isSender ? (

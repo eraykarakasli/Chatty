@@ -110,7 +110,7 @@ const CreateGroup = () => {
 
 
 
-    console.log(newGroup, "new")
+    //console.log(newGroup, "new")
     return (
         <div className={`${theme ? "text-slate-200" : "text-gray-600"} lg:min-w-[400px] lg:max-w-[400px] w-full h-screen border-r border-gray-500`}>
             <div className='h-[83%] w-full'>

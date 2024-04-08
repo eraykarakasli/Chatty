@@ -47,7 +47,7 @@ const ChatInput = () => {
       setLoading(true);
 
       const { data } = await axios.get(
-        `http://localhost:5000/api/message/${selectedChat._id}`,
+        `http://localhost:5000/api/message/${selectedChat?._id}`,
         config
       );
       setMessages(data);

@@ -8,6 +8,7 @@ import { MdGroupAdd } from "react-icons/md";
 import { openGroup } from "../redux/features/navbarSlice";
 import CreateGroup from "./groupChat/CreateGroup";
 import { useState } from "react";
+import FullNavbar from "./navbar/FullNavbar";
 
 const Sidebar = () => {
   const dispatch = useDispatch()

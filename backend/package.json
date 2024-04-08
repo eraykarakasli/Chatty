@@ -1,7 +1,7 @@
 {
   "name": "chat-app-createdbyeraykarakasli",
   "version": "1.0.0",
-  "proxy": "http://2.59.117.152:4173",
+  "proxy": "http://localhost/",
   "description": "",
   "main": "server.js",
   "scripts": {

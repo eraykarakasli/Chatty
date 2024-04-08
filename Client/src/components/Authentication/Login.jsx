@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { VStack } from "@chakra-ui/layout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,20 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const handleClick = () => setShow(!show);
   const history = useNavigate();
+  const user = JSON.parse(localStorage.getItem("userInfo"));
+
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data.type === 'loginSuccess') {
+        localStorage.setItem('userInfo', JSON.stringify(event.data.userInfo));
+      }
+    };
+    window.addEventListener('message', handleMessage, false);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
 
   const submitHandler = async () => {
     setLoading(true)
@@ -56,7 +70,7 @@ const Login = () => {
       setTimeout(() => {
         history('/chats')
       }, 1000);
-      
+
     } catch (error) {
       toast({
         title: "Şifre yanlış veya uyuşmuyor!",

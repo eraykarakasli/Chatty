@@ -34,7 +34,7 @@ const Profile = () => {
         };
         const response = await axios.get('http://localhost:5000/api/quick', config);
         if (response.data.length > 0) {
-          const newQuick = response.data.filter(quick => quick.userId == user._id)
+          const newQuick = response.data.filter(quick => quick.userId == user?._id)
           setQuickMessages(newQuick);
         }
 
@@ -61,7 +61,7 @@ const Profile = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const response = await axios.post('http://localhost:5000/api/quick', { userId: user._id, content: text }, config);
+      const response = await axios.post('http://localhost:5000/api/quick', { userId: user?._id, content: text }, config);
       setQuickMessages([...quickMessages, response.data]);
       setText("");
       setInp(false);
@@ -98,7 +98,7 @@ const Profile = () => {
         },
       };
       await axios.post('http://localhost:5000/api/quick/delete', { id }, config);
-      setQuickMessages(quickMessages.filter(msg => msg._id !== id));
+      setQuickMessages(quickMessages.filter(msg => msg?._id !== id));
       setRender(!render)
       if (quickRender) {
         dispatch(setQuickRender(false))
@@ -139,7 +139,7 @@ const Profile = () => {
             <div className='text-slate-200 w-full h-auto flex justify-between gap-1 border rounded-md bg-[#7269EF] p-2' key={msg._id}>
               <div className='w-[92%] h-auto  break-all'>{msg.content}</div>
               <button className='w-[8%]' >
-                <LiaTimesSolid onClick={() => handleRemoveMessage(msg._id)} size={18} className='hover:text-red-500 duration-300' />
+                <LiaTimesSolid onClick={() => handleRemoveMessage(msg?._id)} size={18} className='hover:text-red-500 duration-300' />
               </button>
             </div>
           ))}

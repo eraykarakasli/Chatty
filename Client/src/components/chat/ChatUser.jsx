@@ -7,6 +7,7 @@ import axios from "axios";
 import { increment } from "../../redux/features/counterSlice";
 import { IoSettingsOutline } from "react-icons/io5";
 import { openGroupMembers } from "../../redux/features/navbarSlice";
+import { setSelectedChat } from "../../redux/providerRedux/serverSlice";
 
 const ChatUser = () => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
@@ -31,11 +32,13 @@ const ChatUser = () => {
     };
 
     useEffect(() => {
-        if (!selectedChat.isGroupChat) {
-            const selectedUser = selectedChat.users.find(users => users._id !== user._id)
-            setFindUser(selectedUser)
-        } else {
-            setFindUser(selectedChat)
+        if (selectedChat) {
+            if (!selectedChat.isGroupChat) {
+                const selectedUser = selectedChat.users.find(users => users._id !== user._id)
+                setFindUser(selectedUser)
+            } else {
+                setFindUser(selectedChat)
+            }
         }
 
     }, [selectedChat])
@@ -63,15 +66,15 @@ const ChatUser = () => {
             color: theme ? "white" : "black",
         },
     };
-   
+//dispatch(setSelectedChat(""));
     return (
         <div className={`${theme ? "" : "text-gray-500"} h-full border-b  border-gray-500 flex justify-between items-center pl-3`}>
             <div className="flex items-center w-full justify-between">
                 <div className="flex items-center">
-                    <div onClick={() => {dispatch(setFullSidebar(true)); dispatch(openGroupMembers(false))}} className="block cursor-pointer lg:hidden "><MdChevronLeft size={24} /></div>
+                    <div onClick={() => { dispatch(setFullSidebar(true));  dispatch(openGroupMembers(false)) }} className="block cursor-pointer lg:hidden "><MdChevronLeft size={24} /></div>
                     {findUser && (
                         <div className="px-3 flex items-center gap-3 font-semibold text-lg">
-                           
+
                             <div className="">
                                 <div>{findUser.name || findUser.chatName} </div>
                                 <div className="pb-1">
