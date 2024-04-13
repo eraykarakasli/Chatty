@@ -18,11 +18,25 @@ const Home = () => {
   const { profilePop } = useSelector((state) => state.profilePop);
   const setting = useSelector((state) => state.navbar.settingOpen);
   const { theme } = useSelector((state) => state.theme);
+  
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data.type === 'loginSuccess') {
+        localStorage.setItem('userInfo', JSON.stringify(event.data.userInfo));
+      }
+    };
+    window.addEventListener('message', handleMessage, false);
 
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
 
   useEffect(() => {
     const userInfo = localStorage.getItem("userInfo");
     const user = userInfo ? JSON.parse(userInfo) : null;
+
+    
 
     dispatch(setUser(user));
 

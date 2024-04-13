@@ -7,13 +7,13 @@ import GroupMembers from '../groupChat/GroupMembers';
 const FullChat = () => {
     const { groupMembers } = useSelector((state) => state.navbar);
     return (
-        <div className='h-screen'>
+        <div className='h-full'>
             <div className='h-[6%]'>
                 <ChatUser />
             </div>
             {!groupMembers ?
                 <>
-                    <div className='h-[85%] overflow-y-scroll'>
+                    <div className='h-[85%] overflow-y'>
                         <ChatContent />
                     </div>
                     <div className='h-[9%]'>

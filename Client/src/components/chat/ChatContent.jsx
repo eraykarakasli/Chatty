@@ -11,6 +11,8 @@ import { FaRegFileZipper } from "react-icons/fa6";
 
 
 const ChatContent = () => {
+  const chatContainerRef = useRef(null);
+
   const toast = useToast();
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const { loading } = useSelector((state) => state.messages);
@@ -172,15 +174,22 @@ const ChatContent = () => {
     }
   }
 
+  // useEffect(() => {
+  //   const chatContainer = document.getElementById('chat-container');
+  //   if (chatContainer) {
+  //     chatContainer.scrollTop = chatContainer.scrollHeight;
+  //   }
+  // }, [messages]);
+
   useEffect(() => {
-    const chatContainer = document.getElementById('chat-container');
-    if (chatContainer) {
-      chatContainer.scrollTop = chatContainer.scrollHeight;
+    if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  }, [messages]);
+}, [messages]);
+
 
   return (
-    <div id="chat-container" className={` h-full p-10 overflow-y-scroll overflow-x-hidden space-y-1 ${theme ? "" : "text-gray-500"}`}>
+    <div ref={chatContainerRef} id="chat-container" className={` h-full p-10 overflow-y-scroll overflow-x-hidden space-y-1 ${theme ? "" : "text-gray-500"}`}>
       {isMessagesArray && !loading ? (
         messages.map((msg) => {
           const isSender = msg.sender?._id === user?._id;

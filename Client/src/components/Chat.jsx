@@ -13,12 +13,7 @@ const Chat = () => {
   const endOfMessagesRef = useRef(null);
   const { loading } = useSelector((state) => state.messages);
   const { groupMembers } = useSelector((state) => state.navbar);
-  useEffect(() => {
-    if (endOfMessagesRef.current) {
-      const behavior = loading ? "auto" : "smooth";
-      endOfMessagesRef.current.scrollIntoView({ behavior });
-    }
-  }, [loading]);
+
 
   return (
     <>
@@ -29,7 +24,7 @@ const Chat = () => {
               <ChatUser />
             </div>
             {!groupMembers ?<>
-              <div className="h-[84%] ">
+              <div className="h-[84%] overflow-y-auto">
                 <ChatContent />
 
               </div>
@@ -47,7 +42,7 @@ const Chat = () => {
           <HiChatBubbleLeftEllipsis className="text-[#7269EF]" size={140} />
         </div>
       }
-      {/* <div ref={endOfMessagesRef} />  */}
+  
     </>
   )
 }

@@ -15,7 +15,7 @@ const FullHome = () => {
     const { profilePop } = useSelector((state) => state.profilePop);
     const groupChat = useSelector((state) => state.navbar.groupCreate)
     return (
-        <div className={`h-screen w-full  block lg:hidden ${theme ? "text-slate-200 bg-gray-600" : "bg-[#F5F7FB] text-gray-500"}`}>
+        <div className={`h-screen  w-full  block lg:hidden ${theme ? "text-slate-200 bg-gray-600" : "bg-[#F5F7FB] text-gray-500"}`}>
             {
                 fullSidebar &&
                 <div className="h-full">
