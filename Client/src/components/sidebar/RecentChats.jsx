@@ -19,7 +19,7 @@ const RecentChats = () => {
     const { selectedChat } = useSelector((state) => state.server);
     const render = useSelector((state) => state.counter.value);
     const me = JSON.parse(localStorage.getItem("userInfo"));
-    const { notification, messages } = useSelector((state) => state.messages);
+    const { notification, messages,clickButton, lastSelectedChat } = useSelector((state) => state.messages);
     const [activeItems, setActiveItems] = useState();
     const [list, setList] = useState();
     const [mesaj, setMesaj] = useState();
@@ -36,7 +36,54 @@ const RecentChats = () => {
     const { filterChat } = useSelector((state) => state.navbar);
     const [lastId, setLastId] = useState(null);
     const [messageIds, setMessageIds] = useState([]);
-
+    const [selectedChat2, setSelectedChat2] = useState(
+        {
+            chatName: "default",
+            createdAt: "2024-03-13T12:53:01.834Z",
+            groupAdmin: {
+                category: "Yok",
+                createdAt: "2024-03-07T10:51:10.762Z",
+                email: "default@default.com",
+                name: "default",
+                pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+                role: "user",
+                status: "Tanımsız",
+                updatedAt: "2024-03-07T10:51:10.762Z",
+                _id: "00e99c1eeed2fd7f6a29be83",
+            },
+            isGroupChat: true,
+            latestMessage: {
+                chat: "00f1a1ad2f87e80a04c29a2b",
+                content: "default message",
+                createdAt: "2024-04-14T09:21:07.322Z",
+                sender: {
+                    email: "default@default.com",
+                    name: "default",
+                    pic: "https://slang.net/img/slang/lg/pp_4215.jpg",
+                    _id: "001ba003df42805328bc03af",
+                },
+            },
+            updatedAt: "2024-04-14T09:21:07.331Z",
+            users: [
+                {
+                    category: "Yok",
+                    createdAt: "2024-02-26T09:10:27.166Z",
+                    email: "default@default.com",
+                    name: "default",
+                    pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+                    role: "user",
+                    status: "Tanımsız",
+                    updatedAt: "2024-03-04T09:23:38.213Z",
+                    _id: "00dc5583ac14a811a639b92e",
+                }
+            ],
+            _id: "00f1a1ad2f87e80a04c29a2b",
+        }
+    );
+    useEffect(()=>{
+dispatch(setSelectedChat(selectedChat2))
+    },[])
+    //console.log(lastSelectedChat)
     useEffect(() => {
         if (recentId) {
             notification.forEach(notif => {
@@ -156,9 +203,11 @@ const RecentChats = () => {
     }, [notifiLength]);
 
     const cancelTokenSource = axios.CancelToken.source();
-
+console.log(selectedChat)
+console.log(lastSelectedChat, "LAAASSST")
     useEffect(() => {
         const deleteNotifyItems = async () => {
+            
             for (const item of notifi2) {
                 if (item.messageId === selectedChat?._id && item.users?._id === me?._id) {
                     try {
@@ -169,23 +218,21 @@ const RecentChats = () => {
                                 headers: {
                                     Authorization: `Bearer ${me.token}`,
                                 },
-                                timeout: 2000,
+                                timeout: 3000,
                                 cancelToken: cancelTokenSource.token,
                             }
                         );
+                        console.log("çlaıştı")
+                       
                     } catch (error) {
                         if (!axios.isCancel(error)) {
-                            // Sadece iptal hatası değilse hata konsola yazdırılır
                             console.error('Hata:', error);
                         }
                     }
                 }
             }
         };
-
         deleteNotifyItems();
-
-        // cleanup function
         return () => {
             cancelTokenSource.cancel('İstek kullanıcı tarafından iptal edildi.');
         };
@@ -215,7 +262,7 @@ const RecentChats = () => {
 
     useEffect(() => {
         const postNotify = async () => {
-            if (!me || !selectedChat._id) return;
+            if (!me || !selectedChat._id ) return;
             const config = {
                 headers: {
                     Authorization: `Bearer ${me.token}`,
@@ -232,7 +279,7 @@ const RecentChats = () => {
 
     useEffect(() => {
         const createNotify = async () => {
-            if (!me || !recent2) return;
+            if (!me || !recent2 ) return;
             const config = {
                 headers: {
                     Authorization: `Bearer ${me.token}`,
@@ -252,19 +299,19 @@ const RecentChats = () => {
                     try {
                         await axios.post(`http://localhost:5000/api/notify`, notifyData, config);
                         // console.log('Başarıyla gönderildi:', notifyData);
-
+                        setNotifi([])
                     } catch (error) {
                         console.error('Hata:', error);
                     }
                 }
-                setNotifi([])
+                
             } catch (error) {
                 console.error('Hata:', error);
             }
         };
         createNotify()
         //console.log("çalışıyor")
-    }, [loading, count])
+    }, [recent])
     //  console.log(notifi2)
     // 2 second render
     useEffect(() => {
@@ -287,6 +334,7 @@ const RecentChats = () => {
                     headers: {
                         Authorization: `Bearer ${me.token}`,
                     },
+                    timeout: 2000,
                 };
                 const userId = me._id;
                 const response = await axios.get(`http://localhost:5000/api/notify/${userId}`, config);

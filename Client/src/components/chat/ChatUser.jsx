@@ -8,6 +8,7 @@ import { increment } from "../../redux/features/counterSlice";
 import { IoSettingsOutline } from "react-icons/io5";
 import { openGroupMembers } from "../../redux/features/navbarSlice";
 import { setSelectedChat } from "../../redux/providerRedux/serverSlice";
+import { setClickButton, setLastSelectedChat } from "../../redux/providerRedux/messagesSlice";
 
 const ChatUser = () => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
@@ -19,8 +20,52 @@ const ChatUser = () => {
     const [selectedStatus, setSelectedStatus] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("");
     const [selectedRole, setSelectedRole] = useState("");
+    const [selectedChat2, setSelectedChat2] = useState(
+        {
+            chatName: "default",
+            createdAt: "2024-03-13T12:53:01.834Z",
+            groupAdmin: {
+                category: "Yok",
+                createdAt: "2024-03-07T10:51:10.762Z",
+                email: "default@default.com",
+                name: "default",
+                pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+                role: "user",
+                status: "Tanımsız",
+                updatedAt: "2024-03-07T10:51:10.762Z",
+                _id: "00e99c1eeed2fd7f6a29be83",
+            },
+            isGroupChat: true,
+            latestMessage: {
+                chat: "00f1a1ad2f87e80a04c29a2b",
+                content: "default message",
+                createdAt: "2024-04-14T09:21:07.322Z",
+                sender: {
+                    email: "default@default.com",
+                    name: "default",
+                    pic: "https://slang.net/img/slang/lg/pp_4215.jpg",
+                    _id: "001ba003df42805328bc03af",
+                },
+            },
+            updatedAt: "2024-04-14T09:21:07.331Z",
+            users: [
+                {
+                    category: "Yok",
+                    createdAt: "2024-02-26T09:10:27.166Z",
+                    email: "default@default.com",
+                    name: "default",
+                    pic: "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+                    role: "user",
+                    status: "Tanımsız",
+                    updatedAt: "2024-03-04T09:23:38.213Z",
+                    _id: "00dc5583ac14a811a639b92e",
+                }
+            ],
+            _id: "00f1a1ad2f87e80a04c29a2b",
+        }
+    );
 
-
+    
     const handleStatusChange = (event) => {
         setSelectedStatus(event.target.value);
     };
@@ -66,12 +111,19 @@ const ChatUser = () => {
             color: theme ? "white" : "black",
         },
     };
-//dispatch(setSelectedChat(""));
+    console.log()
+    const handleClick=()=>{
+        dispatch(setLastSelectedChat(selectedChat));
+        dispatch(setClickButton())
+        //dispatch(setSelectedChat(selectedChat2));
+    }
     return (
         <div className={`${theme ? "" : "text-gray-500"} h-full border-b  border-gray-500 flex justify-between items-center pl-3`}>
             <div className="flex items-center w-full justify-between">
                 <div className="flex items-center">
-                    <div onClick={() => { dispatch(setFullSidebar(true));  dispatch(openGroupMembers(false)) }} className="block cursor-pointer lg:hidden "><MdChevronLeft size={24} /></div>
+                    <div onClick={() => { dispatch(setFullSidebar(true)); dispatch(openGroupMembers(false)) }} className="block cursor-pointer lg:hidden ">
+                        <MdChevronLeft size={24} />
+                    </div>
                     {findUser && (
                         <div className="px-3 flex items-center gap-3 font-semibold text-lg">
 

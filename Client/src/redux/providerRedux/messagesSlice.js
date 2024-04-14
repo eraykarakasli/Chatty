@@ -6,6 +6,8 @@ const initialState = {
   notification: [],
   fetchAgain: false,
   contentMessage: [],
+  clickButton: false,
+  lastSelectedChat: {},
 };
 
 export const messagesSlice = createSlice({
@@ -41,6 +43,12 @@ export const messagesSlice = createSlice({
     setContentMessage: (state, action) => {
       state.contentMessage = action.payload;
     },
+    setClickButton: (state, action) => {
+      state.clickButton = !state.clickButton;
+    },
+    setLastSelectedChat: (state, action) => {
+      state.lastSelectedChat = action.payload;
+    },
   },
 });
 
@@ -53,6 +61,8 @@ export const {
   setFetchAgain,
   removeNotification,
   setContentMessage,
+  setClickButton,
+  setLastSelectedChat
 } = messagesSlice.actions;
 
 export default messagesSlice.reducer;
