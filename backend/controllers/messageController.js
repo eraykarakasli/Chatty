@@ -38,11 +38,17 @@ const sendMessage = asyncHandler(async (req, res) => {
 
 const allMessages = asyncHandler(async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1; // İstemciden gelen sayfa numarası (varsayılan: 1)
+    const pageSize = parseInt(req.query.pageSize) || 20; // İstemciden gelen sayfa boyutu (varsayılan: 20)
+
+    const skip = (page - 1) * pageSize; // Atlamak için hesaplanan değer
+
     const messages = await Message.find({ chat: req.params.chatId })
       .populate("sender", "name pic email")
       .populate("chat")
-      .sort({ createdAt: -1 }) 
-      
+      .sort({ createdAt: -1 })
+      .skip(skip) // Belirli sayıda mesajı atla
+      .limit(pageSize); // Belirli bir sayfa boyutunu aşmayacak şekilde mesajları al
 
     res.json(messages.reverse());
   } catch (error) {
@@ -50,6 +56,9 @@ const allMessages = asyncHandler(async (req, res) => {
     throw new Error(error.message);
   }
 });
+
+
+
 
 
 module.exports = { sendMessage, allMessages };

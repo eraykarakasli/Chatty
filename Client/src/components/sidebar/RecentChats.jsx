@@ -203,8 +203,6 @@ dispatch(setSelectedChat(selectedChat2))
     }, [notifiLength]);
 
     const cancelTokenSource = axios.CancelToken.source();
-console.log(selectedChat)
-console.log(lastSelectedChat, "LAAASSST")
     useEffect(() => {
         const deleteNotifyItems = async () => {
             
@@ -222,7 +220,6 @@ console.log(lastSelectedChat, "LAAASSST")
                                 cancelToken: cancelTokenSource.token,
                             }
                         );
-                        console.log("çlaıştı")
                        
                     } catch (error) {
                         if (!axios.isCancel(error)) {

@@ -7,9 +7,8 @@ import { MdDownload } from "react-icons/md";
 import { GrDocumentPdf, GrDocumentTxt } from "react-icons/gr";
 import { PiMicrosoftExcelLogoFill, PiMicrosoftPowerpointLogoFill, PiMicrosoftWordLogoFill } from "react-icons/pi";
 import { FaFileDownload } from "react-icons/fa";
-import { FaRegFileZipper } from "react-icons/fa6";
-
-
+import { FaRegFileZipper, FaRegSquarePlus } from "react-icons/fa6";
+import { FaArrowCircleDown } from "react-icons/fa";
 const ChatContent = () => {
   const chatContainerRef = useRef(null);
 
@@ -24,6 +23,9 @@ const ChatContent = () => {
   const { selectedChat } = useSelector((state) => state.server)
   const [lastFetchedMessages, setLastFetchedMessages] = useState([]);
   const dispatch = useDispatch()
+  const [page, setPage] = useState(1); // Sayfa numarası
+  const [pageSize, setPageSize] = useState(20); // Sayfa boyutu
+  const [pageSizeUpdated, setPageSizeUpdated] = useState(false);
 
   // const tempMessage = {
   //   chat: {
@@ -55,7 +57,7 @@ const ChatContent = () => {
     }
     return true;
   };
-
+  ///////////////////////////////////////////////////////////
   useEffect(() => {
     const handleMessage = async () => {
       if (!selectedChat) return;
@@ -67,10 +69,10 @@ const ChatContent = () => {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
-         
+
         };
         const { data } = await axios.get(
-          `http://localhost:5000/api/message/${selectedChat?._id}`,
+          `http://localhost:5000/api/message/${selectedChat?._id}?page=${page}&pageSize=${pageSize}`,
           config,
         );
 
@@ -91,7 +93,11 @@ const ChatContent = () => {
       }
     };
     handleMessage();
-  }, [selectedChat, user.token, user]);
+  }, [selectedChat, user.token, user, page, pageSize]);
+
+  ///////////
+
+
 
   useEffect(() => {
     if (endOfMessagesRef.current) {
@@ -119,7 +125,7 @@ const ChatContent = () => {
   function formatContent(content) {
 
     if (content && content.includes(".png") || content.includes(".gif") || content.includes(".jpg") || content.includes(".jpeg") || content.includes(".svg")) {
-   
+
       return <img className="w-[100px] md:w-[200px] sm:w-[150px]" src={content} alt="Yüklenen Resim" />
 
     } else if (content && (content.includes(".mp4") || content.includes(".ogg") || content.includes(".avi") || content.includes(".mov") || content.includes(".mpeg"))) {
@@ -165,7 +171,7 @@ const ChatContent = () => {
         icon = <FaFileDownload className="text-black" size={20} />
       }
 
-      return <a target="_blank"  className="text-black flex items-center gap-1 w-full justify-between break-all cursor-pointer" download href={content}><span className="flex items-center gap-1">{icon}{filename}</span><MdDownload className="text-green-600 pt-1" size={24} /></a>
+      return <a target="_blank" className="text-black flex items-center gap-1 w-full justify-between break-all cursor-pointer" download href={content}><span className="flex items-center gap-1">{icon}{filename}</span><MdDownload className="text-green-600 pt-1" size={24} /></a>
 
     } else {
       const parts = content.split('/');
@@ -182,55 +188,73 @@ const ChatContent = () => {
   // }, [messages]);
 
   useEffect(() => {
-    if (chatContainerRef.current) {
-        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    if (chatContainerRef.current && !pageSizeUpdated) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-}, [messages]);
+    setPageSizeUpdated(false)
+  }, [messages]);
 
+  const scrollToBottom = () => {
+    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+  };
 
+  const handlePageSizeUpdate = () => {
+    setPageSizeUpdated(true);
+  };
   return (
-    <div ref={chatContainerRef} id="chat-container" className={` h-full p-10 overflow-y-scroll overflow-x-hidden space-y-1 ${theme ? "" : "text-gray-500"}`}>
-      {isMessagesArray && !loading ? (
-        messages.map((msg) => {
-          const isSender = msg.sender?._id === user?._id;
-          return (
-            <div key={msg._id} className="w-full  mt-1">
-              {isSender ? (
-                // Mesaj gönderici tarafından gönderildiyse
-                <div className="flex  gap-3 w-full items-end justify-end">
-                  <div className="lg:w-[41%] w-[70%]  rounded-md p-2 text-gray-900 bg-[#c6c5d2]">
-                    {formatContent(msg.content)}
+    <>
+
+      <div ref={chatContainerRef} id="chat-container" className={` h-full p-10 overflow-y-scroll overflow-x-hidden space-y-1 ${theme ? "" : "text-gray-500"}`}>
+        <div onClick={() => { setPageSize(pageSize + 10); handlePageSizeUpdate(); }} className="flex justify-center items-center h-10">
+          <FaRegSquarePlus size={32}  />
+        </div>
+        {isMessagesArray && !loading ? (
+          messages.map((msg) => {
+            const isSender = msg.sender?._id === user?._id;
+            return (
+              <div key={msg._id} className="w-full  mt-1">
+                {isSender ? (
+                  // Mesaj gönderici tarafından gönderildiyse
+                  <div className="flex  gap-3 w-full items-end justify-end">
+                    <div className="lg:w-[41%] w-[70%]  rounded-md p-2 text-gray-900 bg-[#c6c5d2]">
+                      {formatContent(msg.content)}
+                    </div>
+                    {/* <img className="w-10 h-10 rounded-full" src={user.pic} alt={user.name} /> */}
                   </div>
-                  {/* <img className="w-10 h-10 rounded-full" src={user.pic} alt={user.name} /> */}
-                </div>
-              ) : (
-                // Mesaj alıcı tarafından gönderildiyse
-                <div className="flex gap-3  items-end">
-                  {/* <img className="w-10 h-10 rounded-full" src={msg.sender.pic} alt={msg.sender.name} /> */}
-                  <div className="lg:w-[40%] w-[70%] rounded-md p-2 text-slate-100 bg-[#7269EF]">
-                    {formatContent(msg.content)}
+                ) : (
+                  // Mesaj alıcı tarafından gönderildiyse
+                  <div className="flex gap-3  items-end">
+                    {/* <img className="w-10 h-10 rounded-full" src={msg.sender.pic} alt={msg.sender.name} /> */}
+                    <div className="lg:w-[40%] w-[70%] rounded-md p-2 text-slate-100 bg-[#7269EF]">
+                      {formatContent(msg.content)}
+                    </div>
                   </div>
-                </div>
-              )}
-              {isSender ?
-                //  Sender
-                <div className="flex items-center justify-end mt-1">
-                  <div className="flex justify-end text-xs font-semibold lg:w-[40%] w-[70%] px-2">{formatTimeShort(msg.createdAt)}</div>
-                </div> :
-                // receiver
-                <div className={`flex items-center gap-14`}>
-                  <div className={` text-sm   mt-1 w-[19%] `}>{isSender ? formatName(user.name) : formatName(msg.sender.name)}</div>
-                  <div className={`flex justify-end text-xs font-semibold lg:w-[22%] w-[53%] px-20`}>{formatTimeShort(msg.createdAt)}</div>
-                </div>
-              }
-            </div>
-          );
-        })
-      ) : (
-        <div className="h-full w-full flex items-center justify-center">  <Spinner size='xl' /></div>
-      )}
-      {/* <div ref={endOfMessagesRef} />  */}
-    </div>
+                )}
+                {isSender ?
+                  //  Sender
+                  <div className="flex items-center justify-end mt-1">
+                    <div className="flex justify-end text-xs font-semibold lg:w-[40%] w-[70%] px-2">{formatTimeShort(msg.createdAt)}</div>
+                  </div> :
+                  // receiver
+                  <div className={`flex items-center gap-14`}>
+                    <div className={` text-sm   mt-1 w-[19%] `}>{isSender ? formatName(user.name) : formatName(msg.sender.name)}</div>
+                    <div className={`flex justify-end text-xs font-semibold lg:w-[22%] w-[53%] px-20`}>{formatTimeShort(msg.createdAt)}</div>
+                  </div>
+                }
+
+              </div>
+            );
+          })
+        ) : (
+          <div className="h-full w-full flex items-center justify-center">  <Spinner size='xl' /></div>
+        )}
+        {/* <div ref={endOfMessagesRef} />  */}
+        <div onClick={scrollToBottom} className="absolute bottom-20 right-2 cursor-pointer text-[#7269EF]" >
+          <FaArrowCircleDown size={28} />
+        </div>
+      </div>
+
+    </>
   )
 }
 
